@@ -1,0 +1,54 @@
+<div id="<%= id %>">
+  <div>
+    <% if (media) { %>
+    <div class="wig-spacer">
+      <div class="wig-image-container">
+      <% if (media) { %>
+        <img id="<%= id %>-img" class="wig-image" alt="<%= media %>" title="<%= media %>"/>
+      <% } %>
+      </div>
+    </div>
+    <% } %>
+    <% if (name) { %>
+    <h4 class="wig-header"><%= name %></h4>
+    <% } %>
+    <% if (activity || version || author || company) { %>
+    <h5 class="wig-header">
+    <%
+      var arr = []
+      if (activity != "") arr.push(activity)
+      if (version  != "") arr.push(version )
+      if (author   != "") arr.push(author  )
+      if (company  != "") arr.push(company )
+      print(arr.join(" - "))
+    %>
+    </h5>
+    <% } %>
+    <% if (desc) { %>
+    <p  class="wig-text"><%= desc %></p>
+    <% } %>
+    <%if (locdesc || locless) { %>
+    <h5 class="wig-header">Starting location</h5>
+    <p  class="wig-text">
+      <%= locdesc %>
+    <% } %>
+      <%
+      if (locless) {
+        if (locdesc)
+          print("<br>")
+      %>
+        <span class="wig-text wig-warning">
+      <%
+        print('This is a "Play Anywhere" cartridge. Drag the green marker to the desired location then click "Play"')
+      %>
+        </span>
+      <%
+      }
+      %>
+    </p>
+  </div>
+  </div>
+  <div class="wig-spacer">
+    <a id="<%= id %>-play" class="btn btn-default btn-block wig-btn">Play</a>
+  </div>
+</div>

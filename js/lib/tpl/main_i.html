@@ -1,0 +1,25 @@
+<%
+count = items.length
+%>
+<a id='<%= id %>' class="btn btn-info btn-block wig-btn wig-btn-large">
+  <div class="row wig-row">
+    <div class="col-lg-3 text-center" style="margin: 0; padding: 0;">
+      <p style="font-size: .8em; margin: 0"><%= name %></p>
+      <p style="font-size: 1.9em; margin: 0"><%= count %></p>
+    </div>
+    <div class="col-lg-9 text-left" style="margin: 0; padding: 0;">
+      <%
+      if (count == 0) {
+      %>
+      <p class="wig-text-item"><%= if0name %></p>
+      <%
+      } else {
+        for(var i = 0 ; i < Math.min(4, count) ; i++)
+      %>
+          <p class="wig-text-item" style="font-size: .9em;"><%= items[i] %></p>
+      <%
+      }
+      %>
+    </div>
+  </div>
+</a>

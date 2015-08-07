@@ -1,0 +1,18 @@
+<div id="<%= id %>">
+  <% if (needrouting) { %>
+  <div class="wig-spacer" id="<%= id %>-routing"></div>
+  <% } %>
+  <div class="wig-spacer">
+    <div class="wig-image-container">
+      <% if (media) { %>
+        <img id="<%= id %>-img" class="wig-image" alt="<%= media %>" title="<%= media %>"/>
+      <% } %>
+    </div>
+  </div>
+  <h4 class="wig-header" id="<%= id %>-name"><%= name %></h4>
+  <p  class="wig-text" id="<%= id %>-desc"><%= desc %></p>
+  <div id="<%= id%>-items"></div>
+  <div class="wig-spacer">
+    <a id="<%= id %>-ok" class="btn btn-info btn-block wig-btn">Ok</a>
+  </div>
+</div>

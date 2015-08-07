@@ -1,0 +1,72 @@
+<h2>Summary</h2>
+<p style="text-align: justify">
+webwigo is an online emulator for <a href="http://www.wherigo.com">Wherigo cartridges</a>.
+It primary targets authors of such cartridges, allowing them to debug their code at home
+before going to the field and finalize the very last details!
+</p>
+
+<h2>Browser</h2>
+<p style="text-align: justify">
+webwigo relies on <a href="http://modernizr.com">Modernizr</a> to check if the required
+features (typedarray, xhr2, cors and webworkers) are enabled. However, the application
+is built to work in the latest desktop browsers. As such, Internet Explorer 10, Firefox
+24 and Chrome 30 are supported.
+</p>
+
+<h2>Server</h2>
+<p style="text-align: justify">
+webwigo runs entirely in the browser. There are no data exchange with the server. The
+privacy of your source code is guaranted.
+</p> 
+
+<h2>Load</h2>
+<p style="text-align: justify">
+The emulator currently accepts 3 formats as input: <strong>.lua</strong> (source code,
+without medias), <strong>.gwz</strong> (zip archive of source code, with all medias
+included) and <strong>.gwc</strong> (compiled version of a .gwz file). The running
+cartridge is stopped only if the new one is loaded successfully.
+</p>
+
+<div style="padding-left: 64px;">
+  <h3>.lua</h3>
+  <p style="text-align: justify">
+  The provided file should contain a valid Wherigo source code. webwigo extracts the name
+  of the cartridge from this file. An error is thrown if this name is not found. If nothing
+  happens after clicking the "Run" button, check the "Console" tab to find out the issue
+  (syntax error, etc.)
+  </p>
+
+  <h3>.gwz</h3>
+  <p style="text-align: justify">
+  The provided file must be a valid zip archive. It must contain a valid Wherigo source
+  code (as specified above) and zero or more medias (images and/or sounds). Depending
+  on the number of files, loading may take some time.
+  </p>
+
+  <h3>.gwc</h3>
+  <p style="text-align: justify">
+  The provided file must be a valid compiled Wherigo cartridge. The "Medias" tab is
+  disabled and the completion code is never displayed (small protection against cheating).
+  </p>
+</div>
+
+<h2>Reload</h2>
+<p style="text-align: justify">
+The current loaded cartridge (.lua, .gwz or .gwc) can be refreshed at any time by clicking
+the "Reload" button (the running cartridge is stopped).
+</p>
+
+<h2>Run</h2>
+<p style="text-align: justify">
+Clicking the "Run" button starts (or restarts) the cartridge. Depending on your browser, on
+your computer speed and on the cartridge, the initialization may take some time. Since it's
+not possible to show a progress bar in that case, make sure to be patient, until the "Splash
+Screen" is displayed!
+</p>
+
+<h2>Map</h2>
+<p style="text-align: justify">
+The "Map" tab displays the cartridge starting location (red marker, fixed), the player
+location (green marker, draggable), the GPS coordinates, the GPS accuracy (green, orange or
+red) and the active zones (green for visible, red for not visible).
+</p>

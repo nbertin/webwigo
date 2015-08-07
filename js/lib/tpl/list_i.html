@@ -1,0 +1,38 @@
+<a id='<%= id %>' class="btn btn-info btn-block wig-btn wig-btn-medium">
+  <div class="row wig-row">
+    <%
+    if (needrouting)
+      size = 8
+    else
+      size = 11
+    %>
+    <%
+    //if (icon) {
+    //  size = size - 1
+    %>
+    <!--
+    <div class='col-lg-1'>
+      <img id='<%= id %>-ico' class='wig-image' alt='<%= icon %>' title='<%= icon %>'/>
+    </div>
+    -->
+    <%
+    //}
+    %>
+    <div class='col-lg-<%= size %>'>
+      <p class="text-left wig-ellipsis" style="margin-bottom: 0;">
+        <% if (complete) { %>
+        <span class="glyphicon glyphicon-ok" style="padding-right: 4px;"></span>
+        <% } %>
+        <span><%= name %></span>
+      </p>
+      <p class="text-left wig-ellipsis" style="margin-bottom: 0; font-size: 0.8em;"><%= desc %></p>
+    </div>
+    <% if (needrouting) { %>
+    <div class="col-lg-2">
+      <div class="text-center" id='<%= id %>-routing'>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</a>
+ 

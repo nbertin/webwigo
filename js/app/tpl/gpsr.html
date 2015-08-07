@@ -1,0 +1,15 @@
+<div id="id-gpsr-onoff">
+    <i class="fa fa-circle" style="color: <% if (running) print("green"); else print("red") %>"></i>
+    &nbsp;
+    <span style="color: #444">GPS signal is <% if (running) print("OK"); else print("lost") %></span>
+    <br>
+    <i class="fa fa-location-arrow"></i>
+    &nbsp;
+    <span id="id-latitude"><%= latitude %></span>
+    &nbsp;
+    <span id="id-longitude"><%= longitude %></span>
+    &nbsp;&nbsp;&nbsp;
+    <i class="fa fa-wifi" style="color: <%= strength %>;"></i>
+    &nbsp;
+    <span id="id-accuracy" style="color: #444;"><%= accuracy %></span>
+</div>

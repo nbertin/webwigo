@@ -1,0 +1,38 @@
+<div style="display: table;">
+  <div style="display: table-row;">
+    <div class="info-label">Filename</div>
+    <div class="info-value"><%= filename %></div>
+  </div>
+  <% if (carttype == 0) { %>
+  <div style="display: table-row;">
+    <div class="info-label">Cartridge name</div>
+    <div class="info-value"><%= cartname %></div>
+  </div>
+  <div style="display: table-row;">
+    <div class="info-label">Activity</div>
+    <div class="info-value"><%= activity %></div>
+  </div>
+  <div style="display: table-row;">
+    <div class="info-label">Version</div>
+    <div class="info-value"><%= version %></div>
+  </div>
+  <div style="display: table-row;">
+    <div class="info-label">Location less</div>
+    <div class="info-value"><% if (locless) print("yes"); else print("no"); %></div>
+  </div>
+  <div style="display: table-row;">
+    <div class="info-label">Author name</div>
+    <div class="info-value"><%= author %></div>
+  </div>
+  <div style="display: table-row;">
+    <div class="info-label">Player name</div>
+    <div class="info-value"><%= player %></div>
+  </div>
+  <% } %>
+  <div style="display: table-row;">
+    <div class="info-label"># of files</div>
+    <div class="info-value"><%= nfiles %> (<%= nsource %> Lua, <%= nimages %> images, <%= nsounds %> sounds, <%= nothers %> others)
+    </div>
+  </div>
+</div>
+  

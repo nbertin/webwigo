@@ -1,0 +1,11 @@
+<%
+disabled = ""
+if (cmdwith) {
+  btntype = "btn-warning"
+  if (! targets)
+    disabled = "disabled"
+} else {
+  btntype = "btn-success"
+}
+%>
+<a id="<%= id %>" class="btn btn-block <%= btntype %> <%= disabled %> wig-btn"><%= text %></a>

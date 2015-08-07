@@ -1,0 +1,179 @@
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2015 Nicolas BERTIN
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>webwigo</title>
+    <meta name="author" content="Nicolas Bertin"/>
+    <meta name="description" content="webwigo - the online Wherigo&copy; emulator"/>
+    <meta name="keywords" content="geocaching,geocache,groundspeak,game,gps,wherigo,cartridge,emulator,player,development,web, online"/>
+
+    <link rel="stylesheet" type="text/css" href="import.css"/>
+
+    <!-- project libraries used by (nearly) all modules -->
+    <script src="lib/jquery-1.11.2.min.js"></script>
+    <script src="lib/underscore-min.js"></script>
+    <script src="lib/backbone-min.js"></script>
+    <script src="lib/js/bootstrap.min.js"></script>
+    <script src="lib/jasny-bootstrap.min.js"></script>
+    <script src="lib/jquery-ui.min.js"></script>
+    <script src="lib/jquery.slimscroll.min.js"></script>
+    <script src="lib/jquery.fullPage.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        $('#id-fullpage').fullpage({
+          sectionsColor       :
+            ['whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke'],
+          anchors             :
+            ['map'       , 'code'      , 'data'      , 'settings'  , 'help'      , 'about'     ],
+          menu                : '#menu-left',
+          paddingTop          : "48px",
+          paddingBottom       : "20px",
+          scrollingSpeed      : 500,
+          scrollOverflow      : true,
+          normalScrollElements: "#header, #footer, #section-emap, #id-term, #id-emul",
+          afterRender: function() {
+            require(["app/app1"], function(app) {
+              app.init1()
+            })
+          },
+          onLeave: function(srcidx, dstidx, direction) {
+            require(["app/app0"], function(app) {
+              app.onSectionLeave(srcidx, dstidx, direction)
+            })
+          },
+          afterLoad: function(anchor, index) {
+            require(["app/app0"], function(app) {
+              app.onSectionLoaded(anchor, index)
+            })
+          },
+          afterResize: function() {
+            require(["app/app0"], function(app) {
+              app.onWindowResize()
+            })
+          }
+        })
+      })
+    </script>
+  </head>
+
+  <body>
+    <div id="header"> 
+      <ul id="menu-left" class="menu">
+        <li data-menuanchor="map">
+          <a href="#map">map</a>
+        </li>
+        <li>
+          <a id="id-tab-btn-play" class="disabled"><i class="fa fa-play" title="Play/Stop"></i></a>
+        </li>
+        <li>|</li>
+        <li>
+          <a id="id-tab-btn-load"><i class="fa fa-floppy-o" title="Load"></i></a>
+        </li>
+        <li>
+          <a id="id-tab-btn-reload" class="disabled"><i class="fa fa-refresh" title="Reload"></i></a>
+        </li>
+        <li>
+          <a id="id-tab-btn-info" class="disabled"><i class="fa fa-info" title="Cartridge information"></i></a>
+        </li>
+        <li>|</li>
+        <li data-menuanchor="code">
+          <a id="id-tab-btn-code" href="#code" class="disabled"><i class="fa fa-code"></i></a>
+        </li>
+        <li data-menuanchor="data">
+          <a id="id-tab-btn-data" href="#data" class="disabled"><i class="fa fa-image"></i></a>
+        </li>
+        <li>|</li>
+        <li data-menuanchor="settings">
+          <a id="id-tab-btn-conf" href="#settings" class="disabled"><i class="fa fa-cogs"></i></a>
+        </li>
+        <li>|</li>
+        <li data-menuanchor="help">
+          <a href="#help">help</a>
+        </li>
+        <li data-menuanchor="about">
+          <a href="#about">about</a>
+        </li>
+      </ul>
+      <ul id="menu-right" class="menu">
+        <li>
+          <a href="mailto:contact@webwigo.net" title="email"><i class="fa fa-envelope"></i></a>
+        </li>
+        <li>
+          <a href="http://groups.google.com/d/forum/webwigo-the-online-wherigo-emulator" title="group"><i class="fa fa-group"></i></a>
+        </li>
+        <li>
+          <a href="http://twitter.com/__webwigo__" title="twitter"><i class="fa fa-twitter"></i></a>
+        </li>
+        <li>
+          <a href="https://github.com/nbertin/webwigo" title="github"><i class="fa fa-github"></i></a>
+        </li>
+        <li id="id-menu1-separator" style="display: none;">|</li>
+        <li id="id-fullscreen-btn" style="display: none;">
+          <a><i id="id-fullscreen-ico" class="fa fa-expand" title="fullscreen"></i></a>
+        </li>
+      </ul>
+
+      <div id="id-tab-gpsr-toaster" class="tab-toaster"></div>
+      <div id="id-tab-info-toaster" class="tab-toaster"></div>
+      <div id="id-tab-load-toaster" class="tab-toaster"></div>
+  
+    </div>
+    <div id="id-main">
+      <div id="id-fullpage">
+        <div class="section" id="section-emap">
+          <div class="map-page" id="id-emap"></div>
+        </div>
+        <div class="section" id="section-code">
+          <div class="std-page container" id="id-code"></div>
+        </div>
+        <div class="section" id="section-data">
+          <div class="std-page container" id="id-data"></div>
+        </div>
+        <div class="section" id="section-conf">
+          <div class="std-page" id="id-conf"></div>
+        </div>
+        <div class="section" id="section-help">
+          <div class="std-page" id="id-help" ><h1>Help</h1></div>
+        </div>
+        <div class="section" id="section-about">
+          <div class="std-page" id="id-about"><h1>About</h1></div>
+        </div>
+      </div>
+      <div id="footer">webwigo - the online Wherigo&copy; emulator (<span id="id-webwigo-version"></span>)</div>
+    </div>
+
+    <div id="id-emul" style="display: none;"></div>
+    <div id="id-term" style="display: none;"></div>
+    <div id="id-zone" style="display: none;"></div>
+    <div id="id-vars" style="display: none;"></div>
+  
+    <script data-main="js/boot" src="lib/require.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,208 @@
+/*
+The MIT License (MIT)
+
+Copyright (c) 2015 Nicolas BERTIN
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+
+@CHARSET "ISO-8859-1";
+
+/* Disable bootstrap style */
+* {
+    -webkit-box-sizing: content-box;
+            box-sizing: content-box;
+}
+
+/* Custom CSS */
+.leaflet-control-layers-toggle {
+    background-size: 20px 20px;
+    width          : 26px;
+    height         : 26px;
+}
+
+body {
+    color: #444;
+}
+
+/* Header and footer */
+#header, #footer {
+    min-width : 1024px;
+    position  : fixed;
+    display   : block;
+    width     : 100%;
+    background: #4a94db;
+    z-index   : 9;
+}
+
+#header {
+    top           : 0px;
+    font-size     : 20px;
+    vertical-align: middle;
+    height        : 48px;
+    line-height   : 48px;
+}
+
+#footer {
+    bottom        : 0px;
+    font-size     : 12px;
+    text-align    : center;
+    vertical-align: middle;
+    height        : 20px;
+    line-height   : 20px; 
+}
+
+/* left (emulator) and right (social/fullscreen) menus
+ */
+#menu-left {
+    float     : left;
+    padding   : 0 0 0 8px;
+    margin    : 0;
+    z-index   : 70;
+    text-align: left;
+}
+
+#menu-left li {
+    padding: 0 8px 0 8px;
+}
+
+#menu-right {
+    float     : right;
+    padding   : 0 8px 0 0;
+    margin    : 0;
+    z-index   : 70;
+    text-align: right;
+}
+
+#menu-right li {
+    padding: 0 8px 0 8px;
+}
+
+li > a {
+    color: #444;
+}
+
+.menu li {
+    display: inline-block;
+/*  color  : #444;*/
+}
+
+.disabled {
+   pointer-events: none;
+   cursor        : default;
+   color         : #3083ca;
+}
+
+.menu li a {
+    text-decoration: none;
+}
+
+.menu li a:hover {
+    color: #ffffff;
+}
+
+
+/*
+ * Toasters
+ */
+.tab-toaster {
+    position             : fixed;
+    top                  : 48px;
+    left                 : 138px;
+    color                : #444;
+    font-size            : 14px;
+    line-height          : initial;
+    background-color     : #4a94db;
+    -webkit-border-radius: 0 0 16px 16px;
+    border-radius        : 0 0 16px 16px;
+    display              : none;
+}
+
+#id-tab-gpsr-toaster {
+    width                : 320px;
+    padding              : 8px 16px 8px 16px;
+    z-index              : 5000;
+    font-size            : 16px; 
+} 
+
+#id-tab-load-toaster {
+    width                : 512px;
+    padding              : 16px 16px 0 16px;
+    z-index              : 5000;
+}
+
+#id-tab-info-toaster {
+    width                : 512px;
+    padding              : 16px 16px 16px 16px;
+    z-index              : 5000;
+}
+
+.info-label {
+    display  : table-cell;
+    width    : 96px;  
+    font-size: 14px;
+}
+
+.info-value {
+    display  : table-cell;
+    font-size: 14px;
+}
+
+/*
+ * Dialogs
+ */
+.vdlg {
+    position  : absolute;
+    top       : 48px;
+    left      : auto;
+    right     : 0px;
+    overflow  : auto;
+    width     : 400px;
+    max-height: 600px;
+    z-index   : 8;
+}
+
+.vdlg .disabled {
+    color: #bbb;
+}
+
+/*
+ * Slides
+ */
+.section {
+    text-align: center;
+}
+
+.map-page {
+    text-align: left;
+    width     : 100%;
+    height    : 100%;
+}
+
+.std-page {
+    padding-top   : 20px;
+    padding-bottom: 20px;
+    height        : inherit;
+}
+
+.std-page h1 {
+    margin    : 0 auto;
+    font-size : 4em;
+    text-align: center;
+}
