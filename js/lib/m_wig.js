@@ -159,51 +159,25 @@ define([
     * @param    {object} objects
     */
   _this.RefreshObjects = function(obj) {
-    _this.trigger(
-      "evt-wig-refresh-objects", parseJSON(obj)
-    )
+    _this.trigger("evt-wig-refresh-objects", parseJSON(obj))
   }
   
-  /**
-    * Triggers the CartridgeLoaded event
-    *
-    * @public
-    * @memberof module:mWIG#
-    * @method   CartridgeLoaded
-    * @param    {object} cart
-    */
   _this.CartridgeLoaded = function() {
-    console.debug("CartridgeLoaded event")
-    _this.trigger(
-      "evt-wig-cartridge-loaded"
-    )
-  }
-
-  _this.CartridgeStarted = function() {
-    console.debug("CartridgeStarted event")
-    _this.trigger(
-      "evt-wig-cartridge-started"
-    )
-  }  
+    _this.trigger("evt-wig-cartridge-loaded")
+  } 
   
   _this.GetInput = function(obj) {
     var m = parseJSON(obj)
-    _this.trigger(
-      "evt-wig-getinput", m.txt, m.media, m.type, m.choices
-    )
+    _this.trigger("evt-wig-getinput", m.txt, m.media, m.type, m.choices)
   }
   
   _this.MessageBox = function(obj) {
     var m = parseJSON(obj)
-    _this.trigger(
-      "evt-wig-messagebox", m.txt, m.media, m.btn1, m.btn2
-    )
+    _this.trigger("evt-wig-messagebox", m.txt, m.media, m.btn1, m.btn2)
   }
   
   _this.ShowScreen = function(idxScreen, idxObject) {
-    _this.trigger(
-      "evt-wig-showscreen", idxScreen, idxObject
-    )
+    _this.trigger("evt-wig-showscreen", idxScreen, idxObject)
   }
 
   //

@@ -147,7 +147,7 @@ end
 
 function JS2LUA_StartCartridge()
   Player.Cartridge:Start()
-  LUA2JS_CartridgeStarted()
+  --LUA2JS_CartridgeStarted()
 end
 
 -----------------------------------------------------------------------------
@@ -155,10 +155,6 @@ end
 -----------------------------------------------------------------------------
 function LUA2JS_CartridgeLoaded()
   js.run("mWIG.CartridgeLoaded()")
-end
-
-function LUA2JS_CartridgeStarted()
-  js.run("mWIG.CartridgeStarted()")
 end
 
 function LUA2JS_GetInput(item)
