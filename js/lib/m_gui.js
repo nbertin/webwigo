@@ -23,12 +23,11 @@ SOFTWARE.
 */
 
 define([
-  // lib modules
-  "lib/m_lua" ,
-  "lib/m_wig" ,
-  "lib/m_gps" ,
-  "lib/m_scr" ,
-  "lib/m_tpl"
+  "lib/m_lua",
+  "lib/m_wig",
+  "lib/m_gps",
+  "lib/m_scr",
+  "lib/m_tpl",
 ], function(mLUA, mWIG, mGPS, mSCR, mTPL) {
 
   var _this = {}
@@ -57,7 +56,7 @@ define([
     * @memberof module:mGUI#
     * @method   SplashScreen
     */
-  _this.SplashScreen = function(gwx) {
+  _this.ShowSplashScreen = function(gwx) {
     var meta = gwx.getCartMetaData()
     var data = {
       id       : "id-splashscreen",
@@ -74,7 +73,7 @@ define([
     }
     var gobj = {
       object: $(_.template(mTPL.splash)(data)),
-      level : mSCR.LEVEL_TOP,
+      level : mSCR.LEVEL_INI,
       update: null,
       onshow: function() {
 
@@ -83,7 +82,6 @@ define([
         MainScreen()
 
         $("#id-splashscreen-play").click(function(event) {
-          mSCR.Hide(gobj)
           _this.trigger("evt-gui-play")
         })
       }
@@ -92,6 +90,10 @@ define([
     mSCR.Show(gobj)
   }
 
+  _this.HideSplashScreen = function() {
+    mSCR.Hide(mSCR.LEVEL_INI)
+  }
+ 
   /**
     * Displays an InputBox.
     *
@@ -278,11 +280,6 @@ define([
           })
         }
       },
-      //onshow: function() {
-      //  $("#id-mainscreen-exit").click(function(event){
-      //    _this.trigger("evt-gui-quit")
-      //  })
-      //}
     }
 
     mSCR.Show(gobj)
@@ -293,14 +290,14 @@ define([
   }
   
 
-  function __cmp_items(a, b) {
-    //console.log("__cmp_items: a.idx=",a.idx, "b.idx=",b.idx)
-    if (a.idx < b.idx)
-      return -1
-    if (a.idx > b.idx)
-      return 1
-    return 0
-  }
+  // FIXME:
+  //function __cmp_items(a, b) {
+  //  if (a.idx < b.idx)
+  //    return -1
+  //  if (a.idx > b.idx)
+  //    return 1
+  //  return 0
+  //}
 
   //
   // @private
@@ -510,27 +507,12 @@ define([
     mLUA.Call("JS2LUA_ExecuteCommand", objidx, cmdidx, tgtidx)
   }
 
-  /**
-    * Resets the user interface
-    *
-    * @public
-    * @memberof module:mGUI#
-    * @method   Reset
-    */
   _this.Reset = function() {
     for(var i = LOCATIONSCREEN ; i <= TASKSCREEN ; i++)
       _screens[i].items = []
     mSCR.Clear()
   }
 
-  /**
-    * Initializes the emulator GUI.
-    *
-    * @public
-    * @memberof module:mGUI#
-    * @method   Create
-    * @param    {string} emudiv
-    */
   _this.Create = function(emudiv) {
     mSCR.Create(emudiv)
 
@@ -541,28 +523,25 @@ define([
       ShowLuaVMError(error)
     })
     
-    _this.listenTo(mWIG, "evt-wig-cartridge-loaded", function(cart) {
-    
-      _this.listenTo(mWIG, "evt-wig-refresh-objects", function(obj) {
-        _screens[LOCATIONSCREEN ].items = obj.zones//.sort(__cmp_items)
-        _screens[ITEMSCREEN     ].items = obj.items
-        _screens[INVENTORYSCREEN].items = obj.inven
-        _screens[TASKSCREEN     ].items = obj.tasks
+    _this.listenTo(mWIG, "evt-wig-refresh-objects", function(obj) {
+      _screens[LOCATIONSCREEN ].items = obj.zones
+      _screens[ITEMSCREEN     ].items = obj.items
+      _screens[INVENTORYSCREEN].items = obj.inven
+      _screens[TASKSCREEN     ].items = obj.tasks
 
-        mSCR.Update()
-      })
+      mSCR.Update()
+    })
 
-      _this.listenTo(mWIG, "evt-wig-getinput", function(txt, media, type, choice1, choice2, choice3, choice4) {
-        GetInput(txt, media, type, choice1, choice2, choice3, choice4)
-      })
-  
-      _this.listenTo(mWIG, "evt-wig-messagebox", function(txt, media, btn1, btn2) {
-        MessageBox(txt, media, btn1, btn2)
-      })
-  
-      _this.listenTo(mWIG, "evt-wig-showscreen", function(idxScreen, idxObject) {
-        ShowScreen(idxScreen, idxObject)
-      })
+    _this.listenTo(mWIG, "evt-wig-getinput", function(txt, media, type, choice1, choice2, choice3, choice4) {
+      GetInput(txt, media, type, choice1, choice2, choice3, choice4)
+    })
+
+    _this.listenTo(mWIG, "evt-wig-messagebox", function(txt, media, btn1, btn2) {
+      MessageBox(txt, media, btn1, btn2)
+    })
+
+    _this.listenTo(mWIG, "evt-wig-showscreen", function(idxScreen, idxObject) {
+      ShowScreen(idxScreen, idxObject)
     })
   }
 

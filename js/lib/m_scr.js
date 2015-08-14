@@ -37,14 +37,15 @@ define([
   var _scrdiv   = null
   
   // levels
-  _this.LEVEL_TOP = 0    // popups (= messagebox, inputbox, splashscreen)
-  _this.LEVEL_3RD = 1    // detailscreen
-  _this.LEVEL_2ND = 2    // listscreen
-  _this.LEVEL_1ST = 3    // mainscreen
+  _this.LEVEL_INI = 0    // splashscreen
+  _this.LEVEL_TOP = 1    // popups (= messagebox, inputbox)
+  _this.LEVEL_3RD = 2    // detailscreen
+  _this.LEVEL_2ND = 3    // listscreen
+  _this.LEVEL_1ST = 4    // mainscreen
   
   var NLEVELS = (_this.LEVEL_1ST+1)
 
-  var _debugon = false
+  var _debugon = true
   function dump(op, msg) {
     if (_debugon) {
       var s = op + ":"
@@ -91,8 +92,6 @@ define([
         if (op) {
           op.f(op.p)
           qexec()
-        } else {
-          console.log("_queue.shift() returns null!")
         }
       }, 0)
     } else {
@@ -125,6 +124,8 @@ define([
   }
 
   function qshow(obj) {
+    if (typeof obj == "number")
+      obj = get(obj)
     dump("S>>>", "show ("+gobj(obj).attr("id")+")")
     var lvl = level(obj)
     var old = get(lvl)
@@ -140,6 +141,8 @@ define([
   }
 
   function qhide(obj) {
+    if (typeof obj == "number")
+      obj = get(obj)
     dump("H>>>", "hide ("+gobj(obj).attr("id")+")")
     gobj(obj).remove()
     set(level(obj), null)

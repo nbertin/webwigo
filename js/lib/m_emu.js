@@ -22,14 +22,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
  
-/**
- * Utility function to get (ajax) a file as binary (arraybuffer)
- *
- * @global
- * @param  {string} uri
- * @param  {function} cb_onLoad
- *
- */
+//
+// Utility function to get (ajax) a file as binary (arraybuffer)
+//
 function __getbinary(uri, cb_onLoad) {
   var xhr = new XMLHttpRequest()
   xhr.open('GET', uri, true)
@@ -56,7 +51,7 @@ function __getbinary(uri, cb_onLoad) {
 var Module = {
 
   print: function(msg) {
-    // global (see end of module definition)
+    // global routine (see end of module definition)
     __mEMU_Print(msg)
   },
   
@@ -78,55 +73,42 @@ var Module = {
     $.get("lua/base64.lua", function(data) {
       FS.createDataFile("/", "base64.lua", data, true, false);
     })
-  },
-
-  postRun: function() {
-    //@old-code-for-reference-only+
-    //Module['noExitRuntime'] = false
-    //Module.addOnExit(function() {
-    //  __mEMU_Exit()
-    //})
-    //@old-code-for-reference-only-
   }
 }
 
 define([
-  // lib modules
-  "lib/m_rdr" ,
-  "lib/m_lua" ,
-  "lib/m_wig" ,
-  "lib/m_gps" ,
-  "lib/m_gui" ,
+  "lib/m_rdr",
+  "lib/m_lua",
+  "lib/m_wig",
+  "lib/m_gps",
+  "lib/m_gui",
   "lib/m_map"
 ], function(mRDR, mLUA, mWIG, mGPS, mGUI, mMAP) {
 
   var _this = {}
  
-  /**
-    * Start current loaded cartridge.
-    *
-    * @public
-    * @memberof module:mEMU#
-    * @method   Start
-    */
+  //
+  // Prints a message on browser console and notify listeners. This method is
+  // called from Emscripten.
+  //
+  _this.Print = function(msg) {
+    console.log(msg)
+    _this.trigger("evt-emu-println", msg)
+  }
+
   _this.Start = function() {
     _this.Reset()
-
+    // not locationless: player location = cartridge location
     var gwx = mRDR.getReader()
     var dat = gwx.getCartMetaData()
     if (! dat.locless)
-      mMAP.Setup(dat.location)
+      mMAP.Start(dat.location)
 
-    mGUI.SplashScreen(gwx)
+    mGUI.ShowSplashScreen(gwx)
+
+    _this.trigger("evt-emu-started")
   }
 
-  /**
-    * Stop current running cartridge.
-    *
-    * @public
-    * @memberof module:mEMU#
-    * @method   Stop
-    */
   _this.Stop = function() {
     _this.Reset()
     _this.trigger("evt-emu-stopped")
@@ -135,7 +117,6 @@ define([
   _this.Play = function() {
     $.get("lua/Loader.lua", function(loader) {
       var gwx = mRDR.getReader()
-
       gwx.getCode(function(code) {
         var opt
         mLUA.Start()
@@ -147,67 +128,32 @@ define([
         _.defer(function() {
           mLUA.Exec(loader, true)
         })
-        _this.trigger("evt-emu-started")
+        mGUI.HideSplashScreen()
+        _this.trigger("evt-emu-cartridge-playing")
       })
     })
   }
-  
-  /**
-    * Prints a message on browser console and notify listeners. This method is
-    * called from Emscripten.
-    *
-    * @public
-    * @memberof module:mEMU#
-    * @method   Print
-    * @param    {string} msg - text to be printed
-    */
-  _this.Print = function(msg) {
-    console.log(msg)
-    _this.trigger("evt-emu-println", msg)
-  }
 
-  /**
-    * Emulator reset.
-    *
-    * @public
-    * @memberof module:mEMU#
-    * @method   Reset
-    */
   _this.Reset = function() {
     mLUA.Stop ()
     mWIG.Reset()
     mGPS.Reset()
-    mGUI.Reset()
     mMAP.Reset()
+    mGUI.Reset()
   }
   
-  /**
-    * MAP initialization.
-    *
-    * @public
-    * @memberof module:mEMU#
-    * @method   mapCreate
-    */
-  _this.mapCreate = function(mapdiv) {
-    return mMAP.Create(mapdiv)
-  }
-  
-  /**
-    * Emulator initialization.
-    *
-    * @public
-    * @memberof module:mEMU#
-    * @method   Create
-    */
   _this.Create = function(guidiv) {
 
     mWIG.Create()
     mGPS.Create()
+    mMAP.Create()
     mGUI.Create(guidiv)
 
     //
-    // This event is sent by the mWIG module when the cartridge has been loaded
-    // by the "Loader.lua"
+    // evt-wig-cartridge-loaded
+    //
+    // This event is sent by the mWIG module when the cartridge has been
+    // loaded (see lua/Loader.lua / mWIG)
     // 
     _this.listenTo(mWIG, "evt-wig-cartridge-loaded", function() { 
       var gwx = mRDR.getReader()
@@ -215,7 +161,7 @@ define([
 
       if (gwx.getCartMetaData().locless) {
         mLUA.Call("JS2LUA_SetStartingLocation", loc.lat, loc.lng)
-        mMAP.Setup(loc)
+        mMAP.Start(loc)
       } else {
         mGPS.setPlayerLocation(loc)
       }
@@ -230,56 +176,19 @@ define([
     //
     // evt-gui-play
     //
-    // this event is sent by the mGUI module when the player clicks on the
+    // This event is sent by the mGUI module when the player clicks on the
     // "Play" button 
     //
     _this.listenTo(mGUI, "evt-gui-play", function() {
-      $.get("lua/Loader.lua", function(loader) {
-        var gwx = mRDR.getReader()
-
-        gwx.getCode(function(code) {
-          var opt
-          mLUA.Start()
-          if (gwx.getCartType() == gwx.TYPE_GWC)
-            opt = { encoding: 'binary'}
-          else
-            opt = { encoding: 'utf8'  }
-          FS.writeFile("/cartridge.lua", code, opt, "w+")
-          _.defer(function() {
-            mLUA.Exec(loader, true)
-          })
-          _this.trigger("evt-emu-started")
-        })
-      })
+      _this.Play()
     })
-
-    //
-    // This event is sent by the mGUI module when the player clicks on the
-    // "Quit" button 
-    //
-    //_this.listenTo(mGUI, "evt-gui-quit", function() {
-    //  _this.Stop ()
-    //  _this.Start()
-    //})
   }
   
   //
   // Adds the "Print" function to the global object so that it can be called
-  // from Emscripten (see Module object)
+  // from Emscripten (see Emscripten configuration Module object)
   //
   window.__mEMU_Print = _this.Print
-
-  //@old-code-for-reference-only+
-  //
-  // Adds the "Exit" function to the global object so that it can be called
-  // from Emscripten (see Module object)
-  //
-  //window.__mEMU_Exit  = _this.Exit
-  //
-  //_this.Exit = function() {
-  //  mLUA.onError()
-  //}
-  //@old-code-for-reference-only-
 
   // extends module with Backbone Events
   _.extend(_this, Backbone.Events)

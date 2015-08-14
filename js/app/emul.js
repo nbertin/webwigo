@@ -35,11 +35,10 @@ define([
   // emulator window (dialog)
   var _emulvdlg   = undefined
 
-  // toggle play button
-  function _enableplay(fl) {
-    $("#id-tab-btn-play"  )
-      .toggleClass("disabled", false)
-    $("#id-tab-btn-play i")
+  // enable "stop" button
+  function _play(fl) {
+    $("#id-tab-btn-playstop").toggleClass("disabled", false)
+    $("#id-tab-btn-playstop i")
       .toggleClass("fa-stop" , ! fl)
       .toggleClass("fa-play" ,   fl)
   }
@@ -47,7 +46,7 @@ define([
   var ViewEmul = Backbone.View.extend({
     el        : $("#menu-left"),
     events    : {
-      "click #id-tab-btn-play": function() {
+      "click #id-tab-btn-playstop": function() {
         if (_is_running) {
           mEMU.Stop()
         } else {
@@ -56,7 +55,7 @@ define([
       },
     },
     initialize: function() {
-      // fullpage plugin event: section leave
+      // fullpage plugin event: section leaved = hide/show emulator dialog
       this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
         if (_emulvdlg) {
           if (srcidx == SECTION_EMAP) 
@@ -76,21 +75,21 @@ define([
           })
           mEMU.Create("#id-emul-content")
         }
-        if (_is_running)
-          mEMU.Stop()
         mEMU.Start()
-        _enableplay(true)
         $.fn.fullpage.moveTo(SECTION_EMAP)
       })
 
-      this.listenTo(mEMU, "evt-emu-started", function() {
+      this.listenTo(mEMU, "evt-emu-cartridge-playing", function() {
         _is_running = true
-        _enableplay(false)
+        _play(false)
+      })
+
+      this.listenTo(mEMU, "evt-emu-started", function() {
+        _is_running = false
+        _play(true)
       })
   
       this.listenTo(mEMU, "evt-emu-stopped", function() {
-        _is_running = false
-        _enableplay(true)
         mEMU.Start()
       })
     }
