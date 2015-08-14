@@ -59,7 +59,7 @@ define([
     map.setView(loc, 16)
     map.setMaxBounds([[-85, -190], [+85, +190]])
 
-   // layers setup
+    // layers setup
     var osmll = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://www.openstreetmap.org/">OpenStreetMap</a>'
     })
@@ -128,13 +128,17 @@ define([
 
   var ViewEMap = Backbone.View.extend({
     initialize: function() {
-      // FIXME: use localstorage to retreive default location
+      // FIXME: use localstorage to retrieve default location
       // default location = Paris
-      origin = { lat: 48.8567, lng: 2.3508 }
+      origin = {
+        lat: 48.8567,
+        lng:  2.3508
+      }
     
       _mapCreate($("#id-emap")[0], origin)
 
-      mMAP.Create(origin)
+      mMAP.Create()
+      mMAP.Start (origin)
 
       // fullpage plugin event: redraw map when section1 (= map) is loaded
       this.listenTo(App, "evt-app-on-section-loaded", function(anchor, index) {
@@ -142,16 +146,15 @@ define([
           map.invalidateSize()
       })
 
-      // fullpage plugin event: redraw map when window is resize
+      // fullpage plugin event: redraw map when window is resized
       this.listenTo(App, "evt-app-on-window-resize", function() {
         map.invalidateSize()
       })
 
       // mMAP.Setup(location) event 
-      this.listenTo(mMAP, "evt-map-setup", function(loc) {
+      this.listenTo(mMAP, "evt-map-start", function(loc) {
         player.setLatLng(loc)
         _mapPanTo(loc)
-        // save cartridge location
         origin = loc
       })
 

@@ -45,8 +45,11 @@ define([
   }
 
   //
-  // When a zone is updated
-  //  
+  // Called when a zone is updated
+  //
+  // FIXME: should be Update
+  // FIXME: evt-map-zone-inserted
+  // FIXME: evt-map-zone-removed
   _this.RefreshZone = function(zone) {
     if (zone.active) {
       if (zone.visible || mRDR.getReader().canSeeHiddenZones()) {
@@ -61,12 +64,12 @@ define([
     _this.trigger("evt-map-reset")
   }
 
-  _this.Setup = function(loc) {
-    _this.trigger("evt-map-setup", _this.setPlayerLocation(loc))
+  _this.Start = function(loc) {
+    _this.trigger("evt-map-start", _this.setPlayerLocation(loc))
   }
 
-  _this.Create = function(loc) {
-    _this.Setup(loc)
+  _this.Create = function() {
+   _this.trigger("evt-map-create") 
   }
 
   // extends module with Backbone Events
