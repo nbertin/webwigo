@@ -53,9 +53,7 @@ define([], function() {
   _this.setPlayerLocation = function(loc) {
     currloc.lat = loc.lat
     currloc.lng = loc.lng
-    _this.trigger(
-      "evt-gps-set-player-location", currloc, accuracy
-    )
+    _this.trigger("evt-gps-set-player-location", currloc, accuracy)
   }
 
   _this.getPlayerLocation = function() {
@@ -68,12 +66,10 @@ define([], function() {
     gpsEnable(true)
   }
   
-  // FIXME: should be Stop
   _this.Reset = function() {
     gpsEnable(false)
   }
 
-  // FIXME: should call Stop
   _this.Create = function() {
     _this.Reset()
   }

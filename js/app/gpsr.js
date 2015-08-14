@@ -67,12 +67,6 @@ define([
   }
 
   function _bar(acc) {
-    /*
-    if (acc) {
-      if      (acc <   16) return "green"
-      else if (acc <   32) return "orange"
-    }
-    */
     return "#444"
   }
 
@@ -81,7 +75,11 @@ define([
     events    : {
       "click #id-gpsr-onoff": function() {
         _gpsdata.run = !_gpsdata.run
-        // FIXME: mGPS.disable()
+        // FIXME
+        //if (_gpsdata.run)
+        //  mGPS.Stop()
+        //else
+        //  mGPS.Start()
         this.render()
       }
     },
