@@ -37,11 +37,12 @@ define([
   var _scrdiv   = null
   
   // levels
-  _this.LEVEL_INI = 0    // splashscreen
-  _this.LEVEL_TOP = 1    // popups (= messagebox, inputbox)
-  _this.LEVEL_3RD = 2    // detailscreen
-  _this.LEVEL_2ND = 3    // listscreen
-  _this.LEVEL_1ST = 4    // mainscreen
+  _this.LEVEL_ERR = 0 // error screen
+  _this.LEVEL_INI = 1 // splashscreen
+  _this.LEVEL_TOP = 2 // popups (= messagebox, inputbox)
+  _this.LEVEL_3RD = 3 // detailscreen
+  _this.LEVEL_2ND = 4 // listscreen
+  _this.LEVEL_1ST = 5 // mainscreen
   
   var NLEVELS = (_this.LEVEL_1ST+1)
 
@@ -126,28 +127,32 @@ define([
   function qshow(obj) {
     if (typeof obj == "number")
       obj = get(obj)
-    dump("S>>>", "show ("+gobj(obj).attr("id")+")")
-    var lvl = level(obj)
-    var old = get(lvl)
-    if (old != null)
-      gobj(old).remove()
-    set(lvl, obj)
-    hide(obj)
-    $(_scrdiv).append(gobj(obj))
-    if (obj.onshow != null)
-      obj.onshow()
-    refresh()
-    dump("S<<<")
+    if (obj) {
+      dump("S>>>", "show ("+gobj(obj).attr("id")+")")
+      var lvl = level(obj)
+      var old = get(lvl)
+      if (old != null)
+        gobj(old).remove()
+      set(lvl, obj)
+      hide(obj)
+      $(_scrdiv).append(gobj(obj))
+      if (obj.onshow != null)
+        obj.onshow()
+      refresh()
+      dump("S<<<")
+    }
   }
 
   function qhide(obj) {
     if (typeof obj == "number")
       obj = get(obj)
-    dump("H>>>", "hide ("+gobj(obj).attr("id")+")")
-    gobj(obj).remove()
-    set(level(obj), null)
-    refresh()
-    dump("H<<<")
+    if (obj) {
+      dump("H>>>", "hide ("+gobj(obj).attr("id")+")")
+      gobj(obj).remove()
+      set(level(obj), null)
+      refresh()
+      dump("H<<<")
+    }
   }
   
   _this.Create = function(scrdiv) {

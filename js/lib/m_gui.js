@@ -39,23 +39,19 @@ define([
     return s.toString().replace(/<br>/gi, " ")
   }
 
-  function ShowLuaVMError(error) {
-    $("#id-luavm-error").show()
-    $("#id-luavm-error-msg").show()
+  function ShowLuaVMError(errmsg) {
+    var data = {
+      errmsg: errmsg
+    }
+    var gobj = {
+      object: $(_.template(mTPL.luaerr)(data)),
+      level : mSCR.LEVEL_ERR,
+      update: null,
+      onshow: null
+    }
+    mSCR.Show(gobj)
   }
 
-  function HideLuaVMError() {
-    $("#id-luavm-error").hide()
-    $("#id-luavm-error-msg").hide()
-  }
-
-  /**
-    * Displays the "SplashScreen" screen.
-    *
-    * @public
-    * @memberof module:mGUI#
-    * @method   SplashScreen
-    */
   _this.ShowSplashScreen = function(gwx) {
     var meta = gwx.getCartMetaData()
     var data = {
@@ -86,7 +82,6 @@ define([
         })
       }
     }
-    HideLuaVMError()
     mSCR.Show(gobj)
   }
 
@@ -492,7 +487,6 @@ define([
           $("#"+data.id).on("click", { cmdidx: cmdidx, tgtidx: tgt.idx }, function(event) {
             mSCR.Hide(obj)
             ExecuteCommand(
-              //_screens[screenidx].items[itemidx].idx, event.data.cmdidx, event.data.tgtidx
               objidx, event.data.cmdidx, event.data.tgtidx
             )
           })
@@ -519,8 +513,8 @@ define([
     //
     // This event is sent by the mLUA module when the Lua VM is crashed 
     //
-    _this.listenTo(mLUA, "evt-luavm-error", function(error) {
-      ShowLuaVMError(error)
+    _this.listenTo(mLUA, "evt-luavm-error", function(errmsg) {
+      ShowLuaVMError(errmsg)
     })
     
     _this.listenTo(mWIG, "evt-wig-refresh-objects", function(obj) {

@@ -65,7 +65,7 @@ define([
   _this.Exit = function() {
     _.defer(function() {
       mLUA.Stop()
-      _this.trigger("evt-luavm-error", "exit")
+      _this.trigger("evt-luavm-error", "os.exit() called")
     })
 
   }
@@ -81,10 +81,11 @@ define([
     */
   _this.Exec = function(luafile, stopOnError) {
     if (_running) {
-      if (Lua.exec(luafile) == 0) {
+      var errmsg = Pointer_stringify(Lua.exec(luafile))
+      if (errmsg != 0) {
         if (stopOnError) {
           mLUA.Stop()
-          _this.trigger("evt-luavm-error", "error")
+          _this.trigger("evt-luavm-error", errmsg)
         }
       }
     }
