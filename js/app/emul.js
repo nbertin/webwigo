@@ -47,6 +47,7 @@ define([
     el        : $("#menu-left"),
     events    : {
       "click #id-tab-btn-playstop": function() {
+        $.fn.fullpage.moveTo(SECTION_EMAP)
         if (_is_running) {
           mEMU.Stop()
         } else {
