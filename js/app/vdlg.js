@@ -35,7 +35,7 @@ define([
     template : _.template(T),
     
     initialize: function(options) {
-      this.container   = $(options.container)
+      this.container = $(options.container)
 
       this.$el.html(this.template({
         id   : options.id,
