@@ -26,12 +26,14 @@ var WEBWIGO_VERSION = "2.0"
 
 //
 // fullpage plugin sections
-// 
-var SECTION_EMAP = 1
+//
+var SECTION_HOME = 1
+//var SECTION_TERM = 1
 var SECTION_CODE = 2
 var SECTION_DATA = 3
 var SECTION_CONF = 4
 var SECTION_HELP = 5
+
 
 define([
   "screenfull",

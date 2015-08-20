@@ -47,7 +47,7 @@ define([
     el        : $("#menu-left"),
     events    : {
       "click #id-tab-btn-playstop": function() {
-        $.fn.fullpage.moveTo(SECTION_EMAP)
+        $.fn.fullpage.moveTo(SECTION_HOME)
         if (_is_running) {
           mEMU.Stop()
         } else {
@@ -59,9 +59,9 @@ define([
       // fullpage plugin event: section leaved = hide/show emulator dialog
       this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
         if (_emulvdlg) {
-          if (srcidx == SECTION_EMAP) 
+          if (srcidx == SECTION_HOME) 
             _emulvdlg.hide()
-          if (dstidx == SECTION_EMAP)
+          if (dstidx == SECTION_HOME)
             _emulvdlg.show()
         }
       })
@@ -77,7 +77,7 @@ define([
           mEMU.Create("#id-emul-content")
         }
         mEMU.Start()
-        $.fn.fullpage.moveTo(SECTION_EMAP)
+        $.fn.fullpage.moveTo(SECTION_HOME)
       })
 
       this.listenTo(mEMU, "evt-emu-cartridge-playing", function() {

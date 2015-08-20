@@ -93,9 +93,9 @@ define([
 
       // fullpage plugin event: section leave
       this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
-        if (srcidx == SECTION_EMAP)
+        if (srcidx == SECTION_HOME)
           this.hide()
-        if (dstidx == SECTION_EMAP)
+        if (dstidx == SECTION_HOME)
           this.show()
       })
       

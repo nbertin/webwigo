@@ -48,9 +48,9 @@ SOFTWARE.
       $(document).ready(function() {
         $('#id-fullpage').fullpage({
           sectionsColor       :
-            ['whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke'],
+            ['whitesmoke', /*'whitesmoke',*/ 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke'],
           anchors             :
-            ['map'       , 'code'      , 'data'      , 'settings'  , 'help'      , 'about'     ],
+            ['map'       , /*'term'      ,*/ 'code'      , 'data'      , 'conf'      , 'help'      , 'about'     ],
           menu                : '#menu-left',
           paddingTop          : "48px",
           paddingBottom       : "20px",
@@ -86,10 +86,13 @@ SOFTWARE.
     <div id="header"> 
       <ul id="menu-left" class="menu">
         <li data-menuanchor="map">
-          <a href="#map">map</a>
+          <a href="#map"><i class="fa fa-map-o" title="Map"></i></a>
         </li>
         <li>
           <a id="id-tab-btn-playstop" class="disabled"><i class="fa fa-play" title="Play/Stop"></i></a>
+        </li>
+        <li data-menuanchor="term">
+          <a id="id-tab-btn-term" href="#term" class="disabled"><i class="fa fa-terminal" title="Lua console"></i></a>
         </li>
         <li>|</li>
         <li>
@@ -109,8 +112,8 @@ SOFTWARE.
           <a id="id-tab-btn-data" href="#data" class="disabled"><i class="fa fa-image"></i></a>
         </li>
         <li>|</li>
-        <li data-menuanchor="settings">
-          <a id="id-tab-btn-conf" href="#settings" class="disabled"><i class="fa fa-cogs"></i></a>
+        <li data-menuanchor="conf">
+          <a id="id-tab-btn-conf" href="#conf" class="disabled"><i class="fa fa-cogs"></i></a>
         </li>
         <li>|</li>
         <li data-menuanchor="help">
@@ -149,6 +152,11 @@ SOFTWARE.
         <div class="section" id="section-emap">
           <div class="map-page" id="id-emap"></div>
         </div>
+        <!--
+        <div class="section" id="section-term">
+          <div class="std-page" id="id-term"></div>
+        </div>
+        -->        
         <div class="section" id="section-code">
           <div class="std-page container" id="id-code"></div>
         </div>
@@ -170,8 +178,10 @@ SOFTWARE.
 
     <div id="id-emul" style="display: none;"></div>
     <div id="id-term" style="display: none;"></div>
+    <!--
     <div id="id-zone" style="display: none;"></div>
     <div id="id-vars" style="display: none;"></div>
+    -->
   
     <script data-main="js/boot" src="lib/require.js"></script>
 

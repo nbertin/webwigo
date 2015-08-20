@@ -34,7 +34,7 @@ define([
     initialize: function(options) {
       // check if section is active on initialization.
       if ($("#section-data").hasClass("active"))
-        $.fn.fullpage.moveTo(SECTION_EMAP)
+        $.fn.fullpage.moveTo(SECTION_HOME)
 
       // render section on cartridge loaded event
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
@@ -46,9 +46,9 @@ define([
         if (dstidx == SECTION_DATA)
           if ($("#id-tab-btn-data").hasClass("disabled")) {
             if (direction === "up")
-              $.fn.fullpage.moveTo(SECTION_CODE)
+              $.fn.fullpage.moveTo(dstidx-1)
             else
-              $.fn.fullpage.moveTo(SECTION_CONF)
+              $.fn.fullpage.moveTo(dstidx+1)
           }
       })
     },
@@ -87,7 +87,7 @@ define([
       } else {
         $("#id-tab-btn-data").toggleClass("disabled", true)
         if ($("#section-data").hasClass("active"))
-          $.fn.fullpage.moveTo(SECTION_EMAP)
+          $.fn.fullpage.moveTo(SECTION_HOME)
       }
       return this
     }

@@ -23,20 +23,21 @@ SOFTWARE.
 */
 
 define([
-  "terminal"  ,
+  "terminal",
   "mousewheel",
   "text!app/tpl/term.html",
-  "lib/m_rdr" ,
-  "lib/m_emu" ,
-  "lib/m_lua"
-], function(terminal, mousewheel, T, mRDR, mEMU, mLUA) {
+  "lib/m_rdr",
+  "lib/m_emu",
+  "lib/m_lua",
+  "app/app0"
+], function(terminal, mousewheel, T, mRDR, mEMU, mLUA, App) {
   
   var _terminal = undefined
   var _running  = false
   
   function _tslog(msg) {
     var ts = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
-    //_terminal.echo(ts+": "+msg)
+    _terminal.echo(ts+": "+msg)
   }
 
   var ViewTerm = Backbone.View.extend({
@@ -49,12 +50,25 @@ define([
     },
     initialize: function(options) {
       // check if section is active on initialization.
-      //if ($("#section-term").hasClass("active"))
-      //  $.fn.fullpage.moveTo(SECTION_EMAP)
-      
-      //this.$el.append(this.template())
-      
       /*
+      if ($("#section-term").hasClass("active"))
+        $.fn.fullpage.moveTo(SECTION_HOME)
+      */
+
+      // fullpage plugin event: section leave
+      /*
+      this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
+        if (dstidx == SECTION_TERM)
+          if ($("#id-tab-btn-term").hasClass("disabled")) {
+            if (direction === "up")
+              $.fn.fullpage.moveTo(dstidx-1)
+            else
+              $.fn.fullpage.moveTo(dstidx+1)
+          }
+      })
+      */
+      this.$el.append(this.template())
+      
       _terminal = $("#id-term-content").terminal(function(command, term) {
         if (command !== "") {
           if (_running)
@@ -71,15 +85,14 @@ define([
           prompt    : "$ "
         }
       )
-      */
 
-      //$("#id-term").css("padding", "20px")
+      $("#id-term").css("padding", "20px")
       //$("#id-term-content").height($("#id-term").height()-60)
 
       // when a cartridge file is loaded
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
         $("#id-tab-btn-term").toggleClass("disabled", false)
-        //_terminal.clear()
+        _terminal.clear()
         _tslog("cartridge loaded")
       })
 
@@ -89,12 +102,12 @@ define([
 
       this.listenTo(mEMU, "evt-emu-started", function() {
         //_termvdlg.show()
-        _running = true
+        //_running = true
       })
 
       this.listenTo(mEMU, "evt-emu-stopped", function() {
         //_termvdlg.hide()
-        _running = false
+        //_running = false
       })
     }
   })

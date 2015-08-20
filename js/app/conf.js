@@ -31,16 +31,16 @@ define([
     initialize: function(options) {
       // check if section is active on initialization.
       if ($("#section-conf").hasClass("active"))
-        $.fn.fullpage.moveTo(SECTION_EMAP)
+        $.fn.fullpage.moveTo(SECTION_HOME)
 
       // fullpage plugin event: section leave
       this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
         if (dstidx == SECTION_CONF)
           if ($("#id-tab-btn-conf").hasClass("disabled")) {
             if (direction === "up")
-              $.fn.fullpage.moveTo(SECTION_DATA)
+              $.fn.fullpage.moveTo(dstidx-1)
             else
-              $.fn.fullpage.moveTo(SECTION_HELP)
+              $.fn.fullpage.moveTo(dstidx+1)
           }
       })
     },
