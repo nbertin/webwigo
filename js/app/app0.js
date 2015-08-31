@@ -28,7 +28,6 @@ var WEBWIGO_VERSION = "2.0"
 // fullpage plugin sections
 //
 var SECTION_HOME = 1
-//var SECTION_TERM = 1
 var SECTION_CODE = 2
 var SECTION_DATA = 3
 var SECTION_CONF = 4
@@ -44,10 +43,7 @@ define([
   //
   // boot 1st stage (before fullpage rendering)
   //
-  _this.init0 = function() {
-    // update footer with webwigo version
-    $('#id-webwigo-version').html(WEBWIGO_VERSION)
-    
+  _this.init0 = function() { 
     // fullscreen management (screenfull)
     if (screenfull.enabled) {
       $("#id-menu1-separator").show()

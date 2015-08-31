@@ -34,7 +34,7 @@ define([
     initialize: function(options) {
       // check if section is active on initialization.
       if ($("#section-data").hasClass("active"))
-        $.fn.fullpage.moveTo(SECTION_HOME)
+        $.fn.fullpage.silentMoveTo(SECTION_HOME)
 
       // render section on cartridge loaded event
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
@@ -58,6 +58,7 @@ define([
         var rows = 0
         var cols = 0
         var that = this
+
         $.each(gwx.getMediasList(), function(idx, filename) {
           if (cols == 0) {
             rows++
@@ -83,7 +84,10 @@ define([
             cols = 0
         })
         $("#id-tab-btn-data").toggleClass("disabled", false)
-        $.fn.fullpage.reBuild();
+        _.delay(function() {
+          // data will be displayed: force a rebuild to get the scrollbar
+          $.fn.fullpage.reBuild()
+        }, 250)
       } else {
         $("#id-tab-btn-data").toggleClass("disabled", true)
         if ($("#section-data").hasClass("active"))

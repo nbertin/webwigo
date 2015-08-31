@@ -35,7 +35,7 @@ define([
     initialize: function(options) {
       // check if section is active on initialization.
       if ($("#section-code").hasClass("active"))
-        $.fn.fullpage.moveTo(SECTION_HOME)
+        $.fn.fullpage.silentMoveTo(SECTION_HOME)
 
       // render section on cartridge loaded event
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
@@ -61,6 +61,7 @@ define([
         }))
         Prism.highlightAll()
         $("#id-tab-btn-code").toggleClass("disabled", false)
+        // force a rebuild to get the scrollbar
         $.fn.fullpage.reBuild();
       } else {
         $("#id-tab-btn-code").toggleClass("disabled", true)

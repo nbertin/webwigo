@@ -30,7 +30,9 @@ SOFTWARE.
 @import url("lib/leaflet.css");
 @import url("lib/leaflet.awesome-markers.css");
 @import url("lib/prism.css");
-@import url("lib/jquery.terminal.css");
+
+@import url("lib/tinyterm.min.css");
+@import url("lib/themes/solarized.css");
 
 /* custom */
 @import url("css/styles.css");

@@ -29,8 +29,9 @@ require.config({
     screenfull    : "../lib/screenfull.min",
   	string        : "../lib/underscore.string.min",
 
-    terminal      : "../lib/jquery.terminal-min",
     mousewheel    : "../lib/jquery.mousewheel-min",
+    
+    tinyterm      : "../lib/tinyterm.min",
     
     prism         : "../lib/prism",
 

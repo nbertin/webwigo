@@ -23,76 +23,84 @@ SOFTWARE.
 */
 
 define([
-  "terminal",
-  "mousewheel",
-  "text!app/tpl/term.html",
+  "tinyterm",
   "lib/m_rdr",
   "lib/m_emu",
   "lib/m_lua",
   "app/app0"
-], function(terminal, mousewheel, T, mRDR, mEMU, mLUA, App) {
+], function(TinyTerm, mRDR, mEMU, mLUA, App) {
   
+  var _termvdlg = undefined
   var _terminal = undefined
   var _running  = false
   
   function _tslog(msg) {
-    var ts = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
-    _terminal.echo(ts+": "+msg)
+    if (_terminal) {
+      var ts = new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '')
+      _terminal.print(ts + ": " + msg)
+    }
   }
 
   var ViewTerm = Backbone.View.extend({
-    el        : $("#id-term"),
-    template  : _.template(T),
-    events: {
-      "click #id-btn-clear" : function() {
-        //_terminal.clear()
+    el        : $("#menu-left"),
+    events    : {
+      "click #id-tab-btn-term": function() {
+        if (_termvdlg) {
+          if ($("#id-term").dialog("isOpen")) {
+            $("#id-term").dialog("close")
+          }
+          else {
+            $("#id-term").dialog("open")
+          }
+        }
       }
     },
     initialize: function(options) {
       // check if section is active on initialization.
-      /*
       if ($("#section-term").hasClass("active"))
-        $.fn.fullpage.moveTo(SECTION_HOME)
-      */
+        $.fn.fullpage.silentMoveTo(SECTION_HOME)
 
       // fullpage plugin event: section leave
-      /*
       this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
-        if (dstidx == SECTION_TERM)
-          if ($("#id-tab-btn-term").hasClass("disabled")) {
-            if (direction === "up")
-              $.fn.fullpage.moveTo(dstidx-1)
-            else
-              $.fn.fullpage.moveTo(dstidx+1)
-          }
-      })
-      */
-      this.$el.append(this.template())
-      
-      _terminal = $("#id-term-content").terminal(function(command, term) {
-        if (command !== "") {
-          if (_running)
-            mLUA.Exec(command, false)
-          else
-            _tslog("ERROR: Lua VM is not running (cartridge not started) !")
-          }
-        },
-        {
-          greetings : false    ,
-          name      : "console",
-          clear     : true     ,
-          exit      : false    ,
-          prompt    : "$ "
+        if (_termvdlg) {
+          if (srcidx == SECTION_HOME) 
+            _termvdlg.hide()
+          if (dstidx == SECTION_HOME)
+            _termvdlg.show()
         }
-      )
-
-      $("#id-term").css("padding", "20px")
-      //$("#id-term-content").height($("#id-term").height()-60)
+      })
 
       // when a cartridge file is loaded
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
-        $("#id-tab-btn-term").toggleClass("disabled", false)
-        _terminal.clear()
+        if (_terminal == undefined) {
+          _terminal = new TinyTerm(document.querySelector("#id-term"))
+          _terminal.autocomplete = function(target) {
+          }
+          _terminal.process = function(command) {
+            if (command !== "") {
+              if (_running)
+                mLUA.Exec(command, false)
+              else {
+                _tslog("ERROR: Lua VM is not running (cartridge not started) !")
+              }
+            }
+          }
+
+          _termvdlg = $("#id-term").dialog({
+            dialogClass: "vdlg-margin-top",
+            position   : { at: "left bottom" },
+            autoOpen   : false,
+            width      : 800,
+            title      : "Lua console"
+          }).dialogExtend({
+            titlebar   : "transparent",
+            closable   : false,
+            minimizable: true
+          }).dialog("widget")
+
+          $("#id-tab-btn-term").toggleClass("disabled", false)
+          //new TinyTerm(document.querySelector("#id-help"))
+        }
         _tslog("cartridge loaded")
       })
 
@@ -100,14 +108,12 @@ define([
         _tslog(msg)
       })
 
-      this.listenTo(mEMU, "evt-emu-started", function() {
-        //_termvdlg.show()
-        //_running = true
+      this.listenTo(mEMU, "evt-emu-cartridge-playing", function() {
+        _running = true
       })
 
       this.listenTo(mEMU, "evt-emu-stopped", function() {
-        //_termvdlg.hide()
-        //_running = false
+        _running = false
       })
     }
   })

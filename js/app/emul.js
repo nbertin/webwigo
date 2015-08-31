@@ -25,9 +25,8 @@ SOFTWARE.
 define([
   "lib/m_emu",
   "lib/m_rdr",
-  "app/vdlg" ,
   "app/app0"
-], function(mEMU, mRDR, ViewVdlg, App) {
+], function(mEMU, mRDR, App) {
 
   // emulator state (running = true / stopped = false)
   var _is_running = false
@@ -35,8 +34,8 @@ define([
   // emulator window (dialog)
   var _emulvdlg   = undefined
 
-  // enable "stop" button
-  function _play(fl) {
+  // toggle play/stop button
+  function _toggle_playstop(fl) {
     $("#id-tab-btn-playstop").toggleClass("disabled", false)
     $("#id-tab-btn-playstop i")
       .toggleClass("fa-stop" , ! fl)
@@ -68,13 +67,19 @@ define([
 
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
         if (_emulvdlg == undefined) {
-          _emulvdlg = new ViewVdlg({
-            el        : "#id-emul",
-            id        : "emul"    ,
-            container : "#id-emap",
-            title     : "Emulator"
+          $("#id-emul").dialog({
+            dialogClass: "vdlg-margin-top",
+            position   : { at: "right top" },
+            minWidth   : 400,
+            title      : "Emulator"
+          }).dialogExtend({
+            titlebar   : "transparent",
+            closable   : false,
+            minimizable: true
           })
-          mEMU.Create("#id-emul-content")
+          _emulvdlg = $("#id-emul").dialog("widget")
+
+          mEMU.Create("#id-emul")
         }
         mEMU.Start()
         $.fn.fullpage.moveTo(SECTION_HOME)
@@ -82,12 +87,12 @@ define([
 
       this.listenTo(mEMU, "evt-emu-cartridge-playing", function() {
         _is_running = true
-        _play(false)
+        _toggle_playstop(false)
       })
 
       this.listenTo(mEMU, "evt-emu-started", function() {
         _is_running = false
-        _play(true)
+        _toggle_playstop(true)
       })
   
       this.listenTo(mEMU, "evt-emu-stopped", function() {

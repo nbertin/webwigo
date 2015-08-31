@@ -1,27 +1,3 @@
-<!--
-The MIT License (MIT)
-
-Copyright (c) 2015 Nicolas BERTIN
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
--->
-
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 
@@ -41,22 +17,23 @@ SOFTWARE.
     <script src="lib/js/bootstrap.min.js"></script>
     <script src="lib/jasny-bootstrap.min.js"></script>
     <script src="lib/jquery-ui.min.js"></script>
+    <script src="lib/jquery.dialogextend.min.js"></script>
     <script src="lib/jquery.slimscroll.min.js"></script>
     <script src="lib/jquery.fullPage.min.js"></script>
 
     <script>
       $(document).ready(function() {
-        $('#id-fullpage').fullpage({
+        $("#id-fullpage").fullpage({
           sectionsColor       :
-            ['whitesmoke', /*'whitesmoke',*/ 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke', 'whitesmoke'],
+            ["whitesmoke", "whitesmoke", "whitesmoke", "whitesmoke", "whitesmoke", "whitesmoke"],
           anchors             :
-            ['map'       , /*'term'      ,*/ 'code'      , 'data'      , 'conf'      , 'help'      , 'about'     ],
-          menu                : '#menu-left',
+            ["map"       , "code"      , "data"      , "conf"      , "help"      , "about"     ],
+          menu                : "#menu-left",
           paddingTop          : "48px",
-          paddingBottom       : "20px",
           scrollingSpeed      : 500,
+          autoScrolling       : true,
           scrollOverflow      : true,
-          normalScrollElements: "#header, #footer, #section-emap, #id-term, #id-emul",
+          normalScrollElements: "#header, .section, .ui-dialog-titlebar, #id-term",
           afterRender: function() {
             require(["app/app1"], function(app) {
               app.init1()
@@ -88,11 +65,11 @@ SOFTWARE.
         <li data-menuanchor="map">
           <a href="#map"><i class="fa fa-map-o" title="Map"></i></a>
         </li>
-        <li>
-          <a id="id-tab-btn-playstop" class="disabled"><i class="fa fa-play" title="Play/Stop"></i></a>
-        </li>
         <li data-menuanchor="term">
           <a id="id-tab-btn-term" href="#term" class="disabled"><i class="fa fa-terminal" title="Lua console"></i></a>
+        </li>
+        <li>
+          <a id="id-tab-btn-playstop" class="disabled"><i class="fa fa-play" title="Play/Stop"></i></a>
         </li>
         <li>|</li>
         <li>
@@ -147,16 +124,12 @@ SOFTWARE.
       <div id="id-tab-load-toaster" class="tab-toaster"></div>
   
     </div>
+
     <div id="id-main">
       <div id="id-fullpage">
         <div class="section" id="section-emap">
-          <div class="map-page" id="id-emap"></div>
-        </div>
-        <!--
-        <div class="section" id="section-term">
-          <div class="std-page" id="id-term"></div>
-        </div>
-        -->        
+          <div class="map-page container" id="id-emap"></div>
+        </div>  
         <div class="section" id="section-code">
           <div class="std-page container" id="id-code"></div>
         </div>
@@ -164,20 +137,23 @@ SOFTWARE.
           <div class="std-page container" id="id-data"></div>
         </div>
         <div class="section" id="section-conf">
-          <div class="std-page" id="id-conf"></div>
+          <div class="std-page container" id="id-conf"></div>
         </div>
         <div class="section" id="section-help">
-          <div class="std-page" id="id-help" ><h1>Help</h1></div>
+          <div class="std-page container" id="id-help" >
+            <h1>Help</h1>
+          </div>
         </div>
         <div class="section" id="section-about">
-          <div class="std-page" id="id-about"><h1>About</h1></div>
+          <div class="std-page container" id="id-about">
+            <h1>About</h1>
+          </div>
         </div>
-      </div>
-      <div id="footer">webwigo - the online Wherigo&copy; emulator (<span id="id-webwigo-version"></span>)</div>
+      </div>    
     </div>
 
-    <div id="id-emul" style="display: none;"></div>
-    <div id="id-term" style="display: none;"></div>
+    <div id="id-emul"></div>
+    <div id="id-term"></div>
     <!--
     <div id="id-zone" style="display: none;"></div>
     <div id="id-vars" style="display: none;"></div>
@@ -187,3 +163,27 @@ SOFTWARE.
 
   </body>
 </html>
+
+<!--
+The MIT License (MIT)
+
+Copyright (c) 2015 Nicolas BERTIN
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-->
