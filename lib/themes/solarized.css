@@ -1,0 +1,11 @@
+div.tinyterm {
+	font-size: 12px;
+  	text-shadow: none;
+  	color: #b58900;
+  	background: #fdf6e3;
+  	box-shadow: none;
+}
+
+div.tinyterm.flash {
+    background: white;
+}
