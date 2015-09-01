@@ -83,7 +83,7 @@ define([
       b = "visibility: hidden"
     } else {
       if (d < 1000) {
-        d = string.sprintf("%4dm", Math.floor(d))
+        d = string.sprintf("%dm", Math.floor(d))
       } else {       
         if (d < 100000) {
           d = string.sprintf("%3.1fkm", Math.floor(d)/1000)

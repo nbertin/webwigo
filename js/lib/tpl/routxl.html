@@ -1,4 +1,16 @@
-<a class="btn btn-info btn-block wig-btn wig-btn-small">
-  <p   class="wig-distance pull-left"><%= distance %></p>
-  <img class="wig-bearing pull-right" style="<%= bearing %>;" src="js/lib/bearing.png"/>
-</a>
+<div class="btn btn-info btn-block wig-btn wig-btn-small">
+	<div class="wig-table">
+    <div class="wig-row">
+    <% if (distance !== "Here") { %>
+      <div class="wig-cell" style="width: 64px;">
+        <span class="wig-distance">
+          <img class="wig-bearing" style="<%= bearing %>;" src="js/lib/bearing.png"/>
+        </span>
+      </div>
+    <% } %>
+      <div class="wig-cell">
+        <span class="wig-distance"><%= distance %></span>
+      </div>
+    </div>
+  </div>
+</div>
