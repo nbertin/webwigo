@@ -125,9 +125,7 @@ define([
         else
           opt = { encoding: 'utf8'  }
         FS.writeFile("/cartridge.lua", code, opt, "w+")
-        _.defer(function() {
-          mLUA.Exec(loader, true)
-        })
+        mLUA.Exec(loader, true)
         mGUI.HideSplashScreen()
         _this.trigger("evt-emu-cartridge-playing")
       })
