@@ -33,7 +33,7 @@
           scrollingSpeed      : 500,
           autoScrolling       : true,
           scrollOverflow      : true,
-          normalScrollElements: "#header, .section, .ui-dialog-titlebar, #id-term",
+          normalScrollElements: "#header, .section, .ui-dialog-titlebar, #id-emul, #id-term",
           afterRender: function() {
             require(["app/app1"], function(app) {
               app.init1()
@@ -64,9 +64,6 @@
       <ul id="menu-left" class="menu">
         <li data-menuanchor="map">
           <a href="#map"><i class="fa fa-map-o" title="Map"></i></a>
-        </li>
-        <li data-menuanchor="term">
-          <a id="id-tab-btn-term" href="#term" class="disabled"><i class="fa fa-terminal" title="Lua console"></i></a>
         </li>
         <li>
           <a id="id-tab-btn-playstop" class="disabled"><i class="fa fa-play" title="Play/Stop"></i></a>

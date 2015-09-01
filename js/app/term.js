@@ -30,8 +30,8 @@ define([
   "app/app0"
 ], function(TinyTerm, mRDR, mEMU, mLUA, App) {
   
-  var _termvdlg = undefined
   var _terminal = undefined
+  var _dlgstate = undefined
   var _running  = false
   
   function _tslog(msg) {
@@ -41,20 +41,12 @@ define([
     }
   }
 
+  function _clear() {
+    console.log("Lua console: clear")
+
+  }
+
   var ViewTerm = Backbone.View.extend({
-    el        : $("#menu-left"),
-    events    : {
-      "click #id-tab-btn-term": function() {
-        if (_termvdlg) {
-          if ($("#id-term").dialog("isOpen")) {
-            $("#id-term").dialog("close")
-          }
-          else {
-            $("#id-term").dialog("open")
-          }
-        }
-      }
-    },
     initialize: function(options) {
       // check if section is active on initialization.
       if ($("#section-term").hasClass("active"))
@@ -62,21 +54,28 @@ define([
 
       // fullpage plugin event: section leave
       this.listenTo(App, "evt-app-on-section-leave", function(srcidx, dstidx, direction) {
-        if (_termvdlg) {
-          if (srcidx == SECTION_HOME) 
-            _termvdlg.hide()
-          if (dstidx == SECTION_HOME)
-            _termvdlg.show()
+        if (_terminal) {
+          if (srcidx == SECTION_HOME) {
+            _dlgstate = $("#id-term").dialogExtend("state")
+            $("#id-term").dialog("close")
+          }
+          if (dstidx == SECTION_HOME) {
+            $("#id-term").dialog("open")
+            if (_dlgstate === "minimized")
+              $("#id-term").dialogExtend("minimize")
+          }
         }
       })
 
       // when a cartridge file is loaded
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
-        if (_terminal == undefined) {
-          _terminal = new TinyTerm(document.querySelector("#id-term"))
-          _terminal.autocomplete = function(target) {
+        
+        function _reset() {
+          $("#id-term").empty()
+          var term = new TinyTerm(document.querySelector("#id-term"))
+          term.autocomplete = function(target) {
           }
-          _terminal.process = function(command) {
+          term.process = function(command) {
             if (command !== "") {
               if (_running)
                 mLUA.Exec(command, false)
@@ -85,21 +84,24 @@ define([
               }
             }
           }
+          return term       
+        }
 
-          _termvdlg = $("#id-term").dialog({
+        if (_terminal == undefined) {
+          _terminal = _reset()
+          $("#id-term").dialog({
             dialogClass: "vdlg-margin-top",
             position   : { at: "left bottom" },
-            autoOpen   : false,
-            width      : 800,
+            autoOpen   : true,
+            width      : $("#section-emap").width(),
             title      : "Lua console"
           }).dialogExtend({
             titlebar   : "transparent",
             closable   : false,
             minimizable: true
-          }).dialog("widget")
-
-          $("#id-tab-btn-term").toggleClass("disabled", false)
-          //new TinyTerm(document.querySelector("#id-help"))
+          }).dialogExtend("minimize")
+        } else {
+          _terminal = _reset()
         }
         _tslog("cartridge loaded")
       })
