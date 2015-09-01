@@ -147,7 +147,6 @@ end
 
 function JS2LUA_StartCartridge()
   Player.Cartridge:Start()
-  --LUA2JS_CartridgeStarted()
 end
 
 -----------------------------------------------------------------------------
