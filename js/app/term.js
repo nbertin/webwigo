@@ -93,7 +93,7 @@ define([
             dialogClass: "vdlg-margin-top",
             position   : { at: "left bottom" },
             autoOpen   : true,
-            width      : $("#section-emap").width(),
+            width      : 800,
             title      : "Lua console"
           }).dialogExtend({
             titlebar   : "transparent",
