@@ -59,10 +59,12 @@ define([
         this.$el.html(this.template({
           code: gwx.getCode()
         }))
-        Prism.highlightAll()
-        $("#id-tab-btn-code").toggleClass("disabled", false)
+        _.defer(function() {
+          Prism.highlightAll()
+        })
         // force a rebuild to get the scrollbar
         $.fn.fullpage.reBuild();
+        $("#id-tab-btn-code").toggleClass("disabled", false)
       } else {
         $("#id-tab-btn-code").toggleClass("disabled", true)
         if ($("#section-code").hasClass("active"))
