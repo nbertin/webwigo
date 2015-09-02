@@ -79,7 +79,7 @@ define([
     var b = data.bearing
 
     if (Math.floor(d) == 0) {
-      d = "Here"
+      d = "0m"
       b = "visibility: hidden"
     } else {
       if (d < 1000) {

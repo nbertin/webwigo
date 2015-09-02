@@ -1,15 +1,30 @@
 <a id="<%= id %>" class="btn btn-info btn-block wig-btn wig-btn-medium">
   <div class="wig-table">
     <div class="wig-row">
-    <% if (needrouting) { %>
+    <%
+      if (needrouting) {
+        maxwidth = "max-width: 296px;"
+    %>
       <div class="wig-cell" style="width: 64px; min-width: 64px;">
         <div class="text-center" id="<%= id %>-routing"></div>
       </div>
-    <% } %>
-      <div class="wig-cell" style="max-width: 296px;">
+    <%
+      } else {
+        maxwidth = "max-width: 370px;"
+      }
+    %>
+    <%
+      lineheight = "line-height: 56px;"
+      if (desc)
+        lineheight = ""
+    %>
+      <div class="wig-cell" style="<%= maxwidth %> <%= lineheight %>">
         <p class="text-left wig-ellipsis" style="margin-bottom: 0;">
         <% if (complete) { %>
           <span class="glyphicon glyphicon-ok" style="padding-right: 4px;"></span>
+        <% } %>
+        <% if (icon) { %>
+          <span><img id="<%= id %>-ico"/></span>&nbsp;
         <% } %>
           <span><%= name %></span>
         </p>

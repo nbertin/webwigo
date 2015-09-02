@@ -1,2 +1,8 @@
-<img style="<%= bearing %>;" src="js/lib/bearing.png"/>
-<p   style="font-size: 1em;" class="text-center"><%= distance %></p>
+<div>
+<% if (distance !== "0m") { %>
+  <img style="<%= bearing %>;" src="js/lib/bearing.png"/>
+<% } else { %>
+  <img src="js/lib/ok.png"/>
+<% } %>
+	<p style="font-size: 1em;" class="text-center"><%= distance %></p>
+</div>

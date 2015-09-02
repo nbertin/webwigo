@@ -281,18 +281,9 @@ define([
   }
   
   function needrouting(screenidx) {
-    return (screenidx == LOCATIONSCREEN || screenidx == ITEMSCREEN)
+    return (screenidx == LOCATIONSCREEN)
   }
   
-
-  // FIXME:
-  //function __cmp_items(a, b) {
-  //  if (a.idx < b.idx)
-  //    return -1
-  //  if (a.idx > b.idx)
-  //    return 1
-  //  return 0
-  //}
 
   //
   // @private

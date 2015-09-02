@@ -1,16 +1,18 @@
 <div class="btn btn-info btn-block wig-btn wig-btn-small">
 	<div class="wig-table">
     <div class="wig-row">
-    <% if (distance !== "Here") { %>
       <div class="wig-cell" style="width: 64px;">
         <span class="wig-distance">
+        <% if (distance !== "0m") { %>
           <img class="wig-bearing" style="<%= bearing %>;" src="js/lib/bearing.png"/>
+        <% } else { %>
+          <img src="js/lib/ok.png"/>
+        <% } %>
         </span>
       </div>
-    <% } %>
       <div class="wig-cell">
         <span class="wig-distance"><%= distance %></span>
-      </div>
+      </div>  
     </div>
   </div>
 </div>
