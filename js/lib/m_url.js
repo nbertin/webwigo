@@ -81,13 +81,11 @@ define([
     if (cart_type === "LUA")
       cart_type = "SRC"
 
-    if (cart_provider_name == undefined)
-      cart_provider_name = "[not specified]"
-    cart_provider_name = decodeURIComponent(cart_provider_name)
+    if (cart_provider_name != undefined)
+      cart_provider_name = decodeURIComponent(cart_provider_name)
 
-    if (cart_name == undefined)
-      cart_name = "[not specified]"
-    cart_name = decodeURIComponent(cart_name)
+    if (cart_name != undefined)
+      cart_name = decodeURIComponent(cart_name)
 
     if (cart_provider_url != undefined)
       cart_provider_url = decodeURIComponent(cart_provider_url)

@@ -25,8 +25,9 @@ SOFTWARE.
 define([
   "text!app/tpl/info.html",
   "lib/m_rdr",
+  "lib/m_url",
   "app/app0"
-], function(T, mRDR, App) {
+], function(T, mRDR, mURL, App) {
 
   var data = {
     filename: "",
@@ -53,43 +54,45 @@ define([
       })
 
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
-        //if (isURI()) {
-        //  var uri = mURL.parse(_handle)
-        //  _cartname = uri.cart_name + " ("+uri.cart_type+") from ["+uri.cart_provider_name+"]"
-        //} else {
+        data.remote = mRDR.isRemote()
+        if (data.remote) {
+          var params = mURL.parse(mRDR.getHandle())
+          data.provider     = params.cart_provider_name || "not specified"
+          data.provider_url = params.cart_provider_url
+        } else {
           data.filename = gwx.getCartFilename()
-          data.carttype = gwx.getCartType()
-          if (gwx.getCartType() == gwx.TYPE_GWC) {
-            var meta = gwx.getCartMetaData()
-            data.cartname = meta.name     
-            data.activity = meta.activity
-            data.version  = meta.version
-            data.locless  = meta.locless
-            data.author   = meta.author
-            data.player   = gwx.getPlayerName()
+        }
+        data.carttype = gwx.getCartType()
+        if (gwx.getCartType() == gwx.TYPE_GWC) {
+          var meta = gwx.getCartMetaData()
+          data.cartname = meta.name     
+          data.activity = meta.activity
+          data.version  = meta.version
+          data.locless  = meta.locless ? "yes" : "no"
+          data.author   = meta.author
+          data.player   = gwx.getPlayerName()
+        }
+        var files = gwx.getMediasList()
+        data.nfiles  = files.length
+        data.nsource = 0
+        data.nimages = 0
+        data.nsounds = 0
+        data.nothers = 0
+        for(var n = 0 ; n < files.length ; n++) {
+          if (gwx.isCode(files[n])) {
+            data.nsource++
+            continue
           }
-          var files = gwx.getMediasList()
-          data.nfiles  = files.length
-          data.nsource = 0
-          data.nimages = 0
-          data.nsounds = 0
-          data.nothers = 0
-          for(var n = 0 ; n < files.length ; n++) {
-            if (gwx.isCode(files[n])) {
-              data.nsource++
-              continue
-            }
-            if (gwx.isImage(files[n])) {
-              data.nimages++
-              continue
-            }
-            if (gwx.isSound(files[n])) {
-              data.nsounds++
-              continue
-            }
-            nothers++
+          if (gwx.isImage(files[n])) {
+            data.nimages++
+            continue
           }
-        //}
+          if (gwx.isSound(files[n])) {
+            data.nsounds++
+            continue
+          }
+          nothers++
+        }
       })
     },
     render: function() {

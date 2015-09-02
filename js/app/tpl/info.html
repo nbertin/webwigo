@@ -1,8 +1,15 @@
 <div style="display: table;">
+<% if (remote) { %>
+  <div style="display: table-row;">
+    <div class="info-label">Provider</div>
+    <div class="info-value"><%= provider %></div>
+  </div>
+<% } else { %>
   <div style="display: table-row;">
     <div class="info-label">File</div>
     <div class="info-value"><%= filename %></div>
   </div>
+<% } %>
   <% if (carttype == 0) { %>
   <div style="display: table-row;">
     <div class="info-label">Cartridge</div>
@@ -18,7 +25,7 @@
   </div>
   <div style="display: table-row;">
     <div class="info-label">Locationless</div>
-    <div class="info-value"><% if (locless) print("yes"); else print("no"); %></div>
+    <div class="info-value"><%= locless %></div>
   </div>
   <div style="display: table-row;">
     <div class="info-label">Author</div>

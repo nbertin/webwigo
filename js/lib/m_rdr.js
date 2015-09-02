@@ -94,12 +94,15 @@ define([
   }
 
   _this.isRemote = function() {
+    if (_hdle == undefined)
+      throw "routine must be called after cartridge loaded event"
     return (typeof _hdle == "string")
   }
 
-  // FIXME: return true or false depending on the provider (earwigo/kit/WF)
-  _this.isReloadAllowed = function() {
-    return (_this.isRemote() == false)
+  _this.isLocal = function() {
+    if (_hdle == undefined)
+      throw "routine must be called after cartridge loaded event"
+    return (! _this.isRemote())
   }
 
   // extends module with Backbone Events

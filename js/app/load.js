@@ -30,6 +30,7 @@ define([
 ], function(T, mRDR, mURL, App) {
 
   var _handle = undefined
+  var _params = undefined
 
   function isURI() {
     return (typeof _handle == "string")
@@ -52,8 +53,10 @@ define([
 
       // cartridge reader event: loaded
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
-        var _cartname
-        this.hide()
+        var that = this
+        _.delay(function() {
+          that.hide()
+        }, (isURI() ? 3000 : 0))
       })
     },
     render: function() {
@@ -62,14 +65,21 @@ define([
     },
     load: function(uri) {
       if (uri) {
-        _handle = uri
-        this.show (true)
-        this._read()
+        _params = mURL.parse(uri)
+        this.show(true)
+        if (_params.error) {
+          $("#id-load-err-msg").html(_params.error)
+          $("#id-load-err"    ).show()
+        } else {
+          _handle = uri
+          var that = this
+          _.delay(function() {
+            that._read()
+          }, 1000)
+        }
       }
     },
     reload: function() {
-      if (isURI())
-        this.show(true)
       this._read()
     },
     toggle: function() {
@@ -79,9 +89,23 @@ define([
         this.show(false)
     },
     show: function(remote) {
+      $("#id-load-err").hide()
       if (remote) {
+        $("#id-load-msg").html("Loading cartridge from online provider")
+        $("#id-load-rem").show()
         $("#id-load-loc").hide()
+
+        if (_params.cart_provider_name == undefined)
+          _params.cart_provider_name = "server"
+
+        if (_params.cart_name == undefined)
+          _params.cart_name = "cartridge"
+
+        $("#id-load-rem-src").html(_params.cart_provider_name)
+        $("#id-load-rem-nam").html(_params.cart_name)
+        $("#id-load-rem-typ").html(_params.cart_type)
       } else {
+        $("#id-load-msg").html("Load cartridge from your computer")
         $("#id-load-rem").hide()
         $("#id-load-loc").show()
       }
@@ -97,11 +121,11 @@ define([
           _handle,
           // onProgress
           function(val, max) {
-            $("#id-load-inf-rcv").html(val+" bytes received")
-            if (max >= val) {
-              $("#id-load-rem").show()
-              $("#id-load-rem-bar").css("width", ((val * 100)/max)+"%")
-            }
+            $("#id-load-inf-rcv").html(val)
+            //if (max >= val) {
+            //  $("#id-load-rem").show()
+            //  $("#id-load-rem-bar").css("width", ((val * 100)/max)+"%")
+            //}
           },
           // onStatus
           function(msg) {
@@ -115,8 +139,10 @@ define([
           // onError
           function(msg) {
             if (isURI()) {
-              $("#id-load-loc-nam").html(_handle)
-              $("#id-load-loc"    ).show()
+              $("#id-load-rem").hide()
+              $("#id-load-inf").hide()
+            //  $("#id-load-loc-nam").html(_handle)
+            //  $("#id-load-loc"    ).show()
             }
             _handle = undefined
             $("#id-load-err-msg").html(msg)

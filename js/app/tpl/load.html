@@ -1,12 +1,11 @@
 <div class="panel panel-default">
   <div class="panel-heading" style="text-align: justify;">
-    <span id="id-load-msg">Load a cartridge from your computer or from an online provider.</span>
+    <span id="id-load-msg"></span>
   </div>
   <div class="panel-body">
-    <div id="id-load-rem" class="progress" style="display: none; margin-bottom: 0;">
-      <div id="id-load-rem-bar" class="progress-bar" style="width: 0%;"></div>
-    </div>
-    <div id="id-load-loc" class="fileinput fileinput-new" data-provides="fileinput">
+
+    <!-- fileinput -->
+    <div id="id-load-loc" class="fileinput fileinput-new" data-provides="fileinput" style="display: none;">
       <span class="btn btn-default btn-file">
         <span class="fileinput-new">Select file</span>
         <span class="fileinput-exists">Change</span>
@@ -14,10 +13,22 @@
       </span>
       <span id="id-load-loc-nam" class="fileinput-filename"></span>
     </div>
-    <div id="id-load-inf" class="alert alert-info"   style="display: none; padding: 0 8px 0 8px; margin: 0;">
-      <span id="id-load-inf-msg"></span>
-      <span id="id-load-inf-rcv"></span>
+    
+    <!-- online provider -->
+    <div id="id-load-rem" style="display: none;">
+      <p><span id="id-load-inf-rcv">0</span> bytes received from <span id="id-load-rem-src"></span>
+      for <span id="id-load-rem-nam"></span> (<span id="id-load-rem-typ"></span>)</p>
+      <p>
+      <div id="id-load-inf" class="alert alert-info" style="display: none; padding: 0 8px 0 8px; margin: 0;">
+        <p>request status: <span id="id-load-inf-msg"></span></p>
+      </div>
+      <!--
+        <div id="id-load-rem" class="progress" style="display: none; margin-bottom: 0;">
+      <div id="id-load-rem-bar" class="progress-bar" style="width: 0%;"></div>
+      </div>
+      -->
     </div>
+
     <div id="id-load-err" class="alert alert-danger" style="display: none; padding: 0 8px 0 8px; margin: 0;">
       <span id="id-load-err-msg"></span>
     </div>

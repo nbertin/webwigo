@@ -43,7 +43,12 @@ define([
 
       reader.onload = function(evt) {
         var code = null
-        that._zip = new JSZip(new Uint8Array(evt.target.result))
+        try {
+          that._zip = new JSZip(new Uint8Array(evt.target.result))
+        } catch(e) {
+          cb_onError("ERR_CARTRIDGE_UNZIP")
+          return
+        }
         $.each(that._zip.files, function(index, entry) {
           if (that.isCode(entry.name))
             code = entry.asBinary()
