@@ -67,6 +67,14 @@ define([
               id : "id-data-row-"+rows
             }))
           }
+          if (gwx.isCode(filename)) {
+            $("#id-data-row-"+rows).append(that.template({
+              add     : "code",
+              imagesrc: "img/code.png",
+              filename: filename
+            }))
+          }
+          else
           if (gwx.isImage(filename)) {
             gwx.getMediaData(filename, function(src) {
               $("#id-data-row-"+rows).append(that.template({
@@ -78,9 +86,14 @@ define([
           }
           else
           if (gwx.isSound(filename)) {
+            $("#id-data-row-"+rows).append(that.template({
+              add     : "sound",
+              imagesrc: "img/sound.png",
+              filename: filename
+            }))
           }
           cols++
-          if (cols == 5)
+          if (cols == 6)
             cols = 0
         })
         $("#id-tab-btn-data").toggleClass("disabled", false)
