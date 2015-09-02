@@ -99,8 +99,19 @@ define([
 
     L.control.custombutton({
       title   : "Zoom and center map to cartridge start location",
+      icon    : "fa fa-circle-o fa-lg",
+      callback: function() {
+        map.setView(origin, 16)
+      }
+    }).addTo(map)
+
+    L.control.custombutton({
+      title   : "Move player to cartridge start location",
       icon    : "fa fa-dot-circle-o fa-lg",
       callback: function() {
+        player.setLatLng(
+          mMAP.setPlayerLocation(origin)
+        )
         map.setView(origin, 16)
       }
     }).addTo(map)
