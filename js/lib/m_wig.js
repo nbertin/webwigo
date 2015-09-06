@@ -114,7 +114,7 @@ define([
     var m = parseJSON(obj)
     _medias[m.idx] = m
   }
-  
+
   /**
     * Retrieves an image URL given its id, as found in WIGInternal.lua
     *
@@ -164,6 +164,11 @@ define([
   
   _this.CartridgeLoaded = function() {
     _this.trigger("evt-wig-cartridge-loaded")
+  } 
+
+  _this.CartridgeEvent = function(evt) {
+    console.log("CartridgeEvent = ", evt)
+    _this.trigger("evt-wig-cartridge-"+evt)
   } 
   
   _this.GetInput = function(obj) {
