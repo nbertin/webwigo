@@ -146,6 +146,8 @@ function JS2LUA_TimerTick(idx)
 end
 
 function JS2LUA_StartCartridge()
+  WIGInternal.CartridgeEvent("complete")
+  WIGInternal.CartridgeEvent("complete")
   Player.Cartridge:Start()
 end
 
@@ -154,6 +156,10 @@ end
 -----------------------------------------------------------------------------
 function LUA2JS_CartridgeLoaded()
   js.run("mWIG.CartridgeLoaded()")
+end
+
+function  LUA2JS_CartridgeEvent(event)
+  js.run("mW.CartridgeEvent("..event..")")
 end
 
 function LUA2JS_GetInput(item)
@@ -368,19 +374,37 @@ WIGInternal.TimerEvent = function(obj, event)
     if obj.OnStart ~= nil then
       obj:OnStart()
     end
-  elseif
-     (event == "stop") then
+  elseif (event == "stop") then
     if obj.OnStop ~= nil then
       obj:OnStop()
     end
   end
 end
 
+
+function _randomCompletionCode()
+  local cstr = "ABCDEFGHIJKLMNOPQRSTUVWXZ0123456789"
+  local code = ""
+  for i=1,16 do
+    local rdm = math.random(#cstr)
+    local chr = cstr:sub(rdm, rdm)
+    code = code .. chr
+  end
+  return code
+end
+
+local _CompletionCode = nil
+
 WIGInternal.CartridgeEvent = function(event)
-  --if (event == "sync") then
-  --  return
-  --end
-  print("ERROR", "CartridgeEvent = ", event, "(not implemented)")
+  if (event == "complete") then
+    if (_CompletionCode == nil) then
+      _CompletionCode = _randomCompletionCode()
+    end
+    Player.CompletionCode = _CompletionCode
+  elseif (event == "sync") then
+    print("ERROR", "CartridgeEvent = ", event, "(not implemented)")
+  end
+  --LUA2JS_CartridgeEvent(event)
 end
 
 WIGInternal.CommandChangedEvent = function(cmd)
