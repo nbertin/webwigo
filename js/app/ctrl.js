@@ -53,7 +53,6 @@ define([
         $("#id-tab-btn-info").toggleClass("disabled", false)
 
         // enable reload button depending on cartridge source (local/remote)
-        console.log("isLocal, isRemote", mRDR.isLocal(), mRDR.isRemote())
         $("#id-tab-btn-reload").toggleClass("disabled", mRDR.isRemote())
       })
 
