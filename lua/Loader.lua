@@ -22,7 +22,67 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 --]]
 
+-------------------------------------------------------------------------------
+-- E M U L A T O R  P R O T E C T I O N
+-------------------------------------------------------------------------------
+local function _suicide()
+  error(
+    "The author of this cartridge has specified that it should not be playable in the emulator."
+  )
+end
+
+local function _builder()
+  function _match(mincount, patterns)
+    local matched = 0
+    for k, v in pairs(_G) do
+      for _, pattern in pairs(patterns) do
+        if string.match(k, pattern) then
+          matched = matched + 1
+        end
+      end
+    end
+    return matched >= mincount
+  end
+  if _match(3, { "^WWB_" }) then
+    return "earwigo"
+  end
+  if _match(2, { "^_Urwigo", "^Garmin" }) then
+    return "urwigo"
+  end
+  return nil
+end
+
+local function _protected()
+  local builder = _builder()
+  local result  = false
+
+  if builder == "earwigo" then
+    result = (WWB_noemul and type(WWB_noemul) == "function")
+  end
+
+  if builder == "urwigo" then
+    local oldfct = _Urwigo.MessageBox
+    _Urwigo.MessageBox = function(tbl)
+      result = true
+    end
+    _G["Env"]["Platform"] = "Win32"
+    cart.OnStart()
+    _G["Env"]["Platform"] = "emscripten"
+    _Urwigo.MessageBox = oldfct
+  end
+
+  return result
+end
+
+-------------------------------------------------------------------------------
+-- C A R T R I D G E  L O A D E R 
+-------------------------------------------------------------------------------
 cart = dofile("cartridge.lua")
+if _protected() then
+  _suicide()
+end
+
+EnvProtect()
 Player.Cartridge = cart
 
 for _,v in ipairs(cart:GetAllOfType("ZMedia")) do
@@ -30,7 +90,7 @@ for _,v in ipairs(cart:GetAllOfType("ZMedia")) do
 end
 
 for _,v in ipairs(cart:GetAllOfType("Zone")) do
-	LUA2JS_RefreshZone(v)
+  LUA2JS_RefreshZone(v)
 end
 
 LUA2JS_CartridgeLoaded()

@@ -385,6 +385,8 @@ end
 function _randomCompletionCode()
   local cstr = "ABCDEFGHIJKLMNOPQRSTUVWXZ0123456789"
   local code = ""
+
+  math.randomseed(os.time())
   for i=1,16 do
     local rdm = math.random(#cstr)
     local chr = cstr:sub(rdm, rdm)
@@ -571,7 +573,8 @@ end
 -------------------------------------------------------------------------------
 -- E N V
 -------------------------------------------------------------------------------
-local function __env_check(t, k, v)
+
+local function __write_check(t, k, v)
   if ((k == "Platform") or (k == "DeviceID") or (k == "Device")) then
     error(k .. " is a read-only variable", 2)
   end
@@ -582,23 +585,27 @@ local function __readonly(t)
   local proxy = {}
   local mt = {       -- create metatable
     __index    = t,
-    __newindex = __env_check
+    __newindex = __write_check
   }
   setmetatable(proxy, mt)
   return proxy
 end
 
-Env = __readonly{
-  Platform     = "emscripten",
+EnvProtect = function()
+  Env = __readonly(Env)
+end
+
+Env = {
+  Platform     = "emscripten", -- Win32
   CartFolder   = "/"         ,
   SyncFolder   = "/"         ,
   LogFolder    = "/"         ,
   PathSep      = "/"         ,
   DeviceID     = "webwigo"   , -- Desktop
-  Version      = ""          , -- "2.11"
+  Version      = ""          , -- 2.11
   CartFilename = ""          , -- from reader
   Downloaded   = 0           , -- from GWC
-  Device       = "browser"     -- browser   
+  Device       = "browser"     -- Windows PPC  
 }
 
 -------------------------------------------------------------------------------
