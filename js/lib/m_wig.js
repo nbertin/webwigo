@@ -29,7 +29,8 @@ define([
   "lib/m_lua"
 ], function(mRDR, mGPS, mMAP, mLUA) {
   
-  var _this = {}
+  var _this   = {}
+  var _medias = []
 
   /*
   function b64enc(str) {
