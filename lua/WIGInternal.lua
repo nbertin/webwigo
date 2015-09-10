@@ -146,8 +146,6 @@ function JS2LUA_TimerTick(idx)
 end
 
 function JS2LUA_StartCartridge()
-  WIGInternal.CartridgeEvent("complete")
-  WIGInternal.CartridgeEvent("complete")
   Player.Cartridge:Start()
 end
 
@@ -406,7 +404,7 @@ WIGInternal.CartridgeEvent = function(event)
   elseif (event == "sync") then
     print("ERROR", "CartridgeEvent = ", event, "(not implemented)")
   end
-  --LUA2JS_CartridgeEvent(event)
+  LUA2JS_CartridgeEvent(event)
 end
 
 WIGInternal.CommandChangedEvent = function(cmd)
