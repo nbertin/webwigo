@@ -157,7 +157,10 @@ function LUA2JS_CartridgeLoaded()
 end
 
 function  LUA2JS_CartridgeEvent(event)
-  js.run("mW.CartridgeEvent("..event..")")
+  local args = {
+    event
+  }
+  js.run("mWIG.CartridgeEvent("..convert_args(args)..")")
 end
 
 function LUA2JS_GetInput(item)
