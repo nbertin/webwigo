@@ -56,14 +56,16 @@ local function _urwigo_env(t, callback)
   local proxy  = {}
   local mt     = {
     __index    = function(t, k)
+      print("########## read", k)
       if (k == "Platform") then
         callback()
         return "Win32"
       end
-      if (k == "DeviceId") then
+      if (k == "DeviceID") then
         callback()
         return "Desktop"
       end
+      return ""
     end
   }
   setmetatable(proxy, mt)
@@ -74,20 +76,27 @@ local function _protected()
   local builder = _builder()
   local result  = false
 
+  -- earwigo detection
   if builder == "earwigo" then
     result = (WWB_noemul and type(WWB_noemul) == "function")
   end
 
+  -- urwigo detection
   if builder == "urwigo" then
     local count = 0
 
-    local function env_access()
+    local function env_access(k)
       count = count + 1
     end
-
     Env = _urwigo_env(Env, env_access)
+
+    local oldfct = _Urwigo.MessageBox
+    _Urwigo.MessageBox = function(tbl)
+      count = count + 1
+    end
     cart.OnStart()
-    result = (count == 2)
+    _Urwigo.MessageBox = oldfct
+    result = (count == 3)
   end
 
   return result
@@ -111,7 +120,5 @@ end
 for _,v in ipairs(cart:GetAllOfType("Zone")) do
   LUA2JS_RefreshZone(v)
 end
-
-print(Env.Platform)
 
 LUA2JS_CartridgeLoaded()
