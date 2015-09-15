@@ -39,12 +39,13 @@ define([
     return s.toString().replace(/<br>/gi, " ")
   }
 
-  function ShowLuaVMError(errmsg) {
+  function ShowLuaMsg(typ, msg) {
     var data = {
-      errmsg: errmsg
+      typ: typ,
+      msg: msg
     }
     var gobj = {
-      object: $(_.template(mTPL.luaerr)(data)),
+      object: $(_.template(mTPL.luamsg)(data)),
       level : mSCR.LEVEL_ERR,
       update: null,
       onshow: null
@@ -504,10 +505,18 @@ define([
     //
     // This event is sent by the mLUA module when the Lua VM is crashed 
     //
-    _this.listenTo(mLUA, "evt-luavm-error", function(errmsg) {
-      ShowLuaVMError(errmsg)
+    _this.listenTo(mLUA, "evt-luavm-error", function(msg) {
+      if (msg.match(/cartridge.lua:\d:/) == null) {
+        msg = msg.slice(msg.search(":")+1)
+        msg = msg.slice(msg.search(":")+1)
+      } 
+      ShowLuaMsg("error", msg)
     })
-    
+
+    _this.listenTo(mLUA, "evt-luavm-info", function(msg) {
+      ShowLuaMsg("info", msg)
+    })
+
     _this.listenTo(mWIG, "evt-wig-refresh-objects", function(obj) {
       _screens[LOCATIONSCREEN ].items = obj.zones
       _screens[ITEMSCREEN     ].items = obj.items

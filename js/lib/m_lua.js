@@ -65,9 +65,8 @@ define([
   _this.Exit = function() {
     _.defer(function() {
       mLUA.Stop()
-      _this.trigger("evt-luavm-error", "os.exit() called")
+      _this.trigger("evt-luavm-info", "os.exit() called. Cartridge has been stopped.")
     })
-
   }
 
   /**

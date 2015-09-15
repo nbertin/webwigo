@@ -24,7 +24,7 @@ SOFTWARE.
 
 define([
   "string",
-  "text!lib/tpl/luaerr.html",
+  "text!lib/tpl/luamsg.html",
   "text!lib/tpl/splash.html",
   "text!lib/tpl/routxl.html",
   "text!lib/tpl/routxs.html",
@@ -36,12 +36,12 @@ define([
   "text!lib/tpl/list_i.html",
   "text!lib/tpl/dtl__0.html",
   "text!lib/tpl/dtl__i.html"
-], function(string, luaerr, splash, routxl, routxs, main_0, main_i, msgbox, inpbox, list_0, list_i, dtl__0, dtl__i) {
+], function(string, luamsg, splash, routxl, routxs, main_0, main_i, msgbox, inpbox, list_0, list_i, dtl__0, dtl__i) {
 
   var _this = {}
 
   // templates
-  _this.luaerr = luaerr
+  _this.luamsg = luamsg
   _this.splash = splash
   _this.routxl = routxl
   _this.routxs = routxs
