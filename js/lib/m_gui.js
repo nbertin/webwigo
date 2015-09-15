@@ -506,7 +506,7 @@ define([
     // This event is sent by the mLUA module when the Lua VM is crashed 
     //
     _this.listenTo(mLUA, "evt-luavm-error", function(msg) {
-      if (msg.match(/cartridge.lua:\d:/) == null) {
+      if (msg.match(/\[string "input"\]/) != null) {
         msg = msg.slice(msg.search(":")+1)
         msg = msg.slice(msg.search(":")+1)
       } 
