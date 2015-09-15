@@ -572,42 +572,40 @@ WIGInternal.IsPointInZone = function(point, zone)
 end
 
 -------------------------------------------------------------------------------
--- E N V
+-- E N V  M A N A G E M E N T
 -------------------------------------------------------------------------------
 
-local function __write_check(t, k, v)
-  if ((k == "Platform") or (k == "DeviceID") or (k == "Device")) then
-    error(k .. " is a read-only variable", 2)
-  end
-  rawset(t, k, v)
-end
-
-local function __readonly(t)
-  local proxy = {}
-  local mt = {       -- create metatable
+local function _readonly(t)
+  local proxy  = {}
+  local mt     = {
     __index    = t,
-    __newindex = __write_check
+    __newindex = function(t, k, v)
+      if ((k == "Platform") or (k == "DeviceID") or (k == "Device")) then
+        error("Env.".. k .. " is a read-only variable!", 2)
+      end
+      rawset(t, k, v)
+    end
   }
   setmetatable(proxy, mt)
   return proxy
 end
 
 EnvProtect = function()
-  Env = __readonly(Env)
+  Env = _readonly({
+      Platform     = "emscripten", -- Win32
+      CartFolder   = "/"         ,
+      SyncFolder   = "/"         ,
+      LogFolder    = "/"         ,
+      PathSep      = "/"         ,
+      DeviceID     = "webwigo"   , -- Desktop
+      Version      = ""          , -- 2.11
+      CartFilename = ""          , -- from reader
+      Downloaded   = 0           , -- from GWC
+      Device       = "browser"     -- Windows PPC  
+    })
 end
 
-Env = {
-  Platform     = "emscripten", -- Win32
-  CartFolder   = "/"         ,
-  SyncFolder   = "/"         ,
-  LogFolder    = "/"         ,
-  PathSep      = "/"         ,
-  DeviceID     = "webwigo"   , -- Desktop
-  Version      = ""          , -- 2.11
-  CartFilename = ""          , -- from reader
-  Downloaded   = 0           , -- from GWC
-  Device       = "browser"     -- Windows PPC  
-}
+Env = {}
 
 -------------------------------------------------------------------------------
 -- D E B U G
