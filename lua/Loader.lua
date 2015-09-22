@@ -27,7 +27,11 @@ SOFTWARE.
 -------------------------------------------------------------------------------
 local function _suicide()
   error(
-    "The author of this cartridge has specified that it should not be playable in the emulator."
+    "The author of this cartridge has specified that it should not be playable in "..
+    "the emulator.<br><br>"..
+    "note: the code for the protection detection is experimental. If you think "..
+    "it's a false-positive, please do not hesitate to contact the author to confirm "..
+    "if the cartridge is protected or not and then, get in touch with us!"
   )
 end
 
