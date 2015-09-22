@@ -22,17 +22,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-define([], function() {
+define([
+  "lib/m_map"
+], function(mMAP) {
 
   var _this        = {}
 
-  var gpstimer_tid = undefined
+  // constants
   var gpstimer_dly = 1000
   var accuracy_min = 2
   var accuracy_low = 32
-  var accuracy_max = 2048
+  var accuracy_max = 1024
+
+  // variables
+  var gpstimer_tid = undefined
+  var isrunning    = false
   var accuracy     = accuracy_max
-  var currloc      = { lat: 360.0000, lng: 360.0000 }
+  var currloc      = {
+    lat: 360.0000,
+    lng: 360.0000
+  }
 
   function gpsTimerUpdate() {
     if (accuracy == accuracy_min)
@@ -42,36 +51,48 @@ define([], function() {
     _this.trigger("evt-gps-accuracy-change", accuracy)
   }
 
-  function gpsEnable(enable) {
-    accuracy = accuracy_max
-    if (gpstimer_tid != undefined)
-      clearInterval(gpstimer_tid)
-    if (enable)
-      gpstimer_tid = setInterval(gpsTimerUpdate, gpstimer_dly)
-  }
-
   _this.setPlayerLocation = function(loc) {
     currloc.lat = loc.lat
     currloc.lng = loc.lng
-    _this.trigger("evt-gps-set-player-location", currloc, accuracy)
+    if (isrunning)
+      _this.trigger("evt-gps-set-player-location", currloc, accuracy)
   }
 
   _this.getPlayerLocation = function() {
     return currloc
   }
 
-  _this.Start = function(loc) {
-    currloc.lat = loc.lat
-    currloc.lng = loc.lng
-    gpsEnable(true)
-  }
-  
-  _this.Reset = function() {
-    gpsEnable(false)
+  _this.Start = function() {
+    // notify listeners
+    isrunning = true
+    _this.trigger("evt-gps-on-off-status", isrunning)
+    // start timer and update location/accuracy
+    gpstimer_tid = setInterval(gpsTimerUpdate, gpstimer_dly)
+    _this.setPlayerLocation(currloc)
   }
 
+  _this.Stop = function() {
+    // notify listeners
+    isrunning = false
+    _this.trigger("evt-gps-on-off-status", isrunning)
+    // stop timer and update accuracy 
+    clearInterval(gpstimer_tid)
+    accuracy  = accuracy_max
+    _this.trigger("evt-gps-accuracy-change", accuracy)
+  }
+
+  _this.OnOff = function() {
+    if (isrunning)
+      _this.Stop()
+    else
+      _this.Start()
+  }
+ 
   _this.Create = function() {
-    _this.Reset()
+    _this.listenTo(mMAP, "evt-map-set-player-location", function(loc) {
+      _this.setPlayerLocation(loc)
+    })
+    //_this.Stop()
   }
 
   // extends module with Backbone Events

@@ -23,9 +23,8 @@ SOFTWARE.
 */
 
 define([
-  "lib/m_gps",
   "lib/m_rdr"
-], function(mGPS, mRDR) {
+], function(mRDR) {
   
   var _this = {}
 
@@ -39,15 +38,15 @@ define([
       loc.lat = ((loc.lat > 0) ? +1 : -1) * bounds.lat
     if (Math.abs(loc.lng) > bounds.lng)
       loc.lng = ((loc.lng > 0) ? +1 : -1) * bounds.lng
-    // update mGPS
-    mGPS.setPlayerLocation(loc)
+
+    _this.trigger("evt-map-set-player-location", loc)
     return loc
   }
 
   //
   // Called when a zone is updated
   //
-  // FIXME: should be Update
+  // FIXME: should be Update()
   // FIXME: evt-map-zone-inserted
   // FIXME: evt-map-zone-removed
   _this.RefreshZone = function(zone) {

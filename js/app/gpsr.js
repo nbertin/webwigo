@@ -26,13 +26,14 @@ define([
   "string",
   "text!app/tpl/gpsr.html",
   "lib/m_gps",
+  "lib/m_map",
   "lib/m_rdr",
   "lib/m_emu",
   "app/app0",
-], function(string, T, mGPS, mRDR, mEMU, App) {
+], function(string, T, mGPS, mMAP, mRDR, mEMU, App) {
   
   var _gpsdata = {
-    run: true,
+    run: false,
     lat: undefined,
     lng: undefined,
     acc: undefined
@@ -61,26 +62,16 @@ define([
   }
 
   function _acc(acc) {
-    if (acc && (acc < 1024))
+    if (acc && (acc < 1000))
       return acc + "m"
     return "..."
-  }
-
-  function _bar(acc) {
-    return "#444"
   }
 
   var ViewGpsr = Backbone.View.extend({
     el        : $("#id-tab-gpsr-toaster"),
     events    : {
-      "click #id-gpsr-onoff": function() {
-        _gpsdata.run = !_gpsdata.run
-        // FIXME
-        //if (_gpsdata.run)
-        //  mGPS.Stop()
-        //else
-        //  mGPS.Start()
-        this.render()
+      "click #id-gpsr-toggle-onoff": function() {
+        mGPS.OnOff()
       }
     },
     template  : _.template(T),
@@ -98,16 +89,21 @@ define([
         if (dstidx == SECTION_HOME)
           this.show()
       })
-      
-      this.listenTo(mGPS, "evt-gps-set-player-location", function(loc, acc) {
+
+      this.listenTo(mMAP, "evt-map-set-player-location", function(loc) {
         _gpsdata.lat = loc.lat
         _gpsdata.lng = loc.lng
-        _gpsdata.acc = acc
+        this.render()
+      })
+
+      this.listenTo(mGPS, "evt-gps-on-off-status", function(status) {
+        _gpsdata.run = status
         this.render()
       })
       
       this.listenTo(mGPS, "evt-gps-accuracy-change", function(acc) {
-        $("#id-accuracy").html(_acc(acc)).css("color", _bar(acc))
+        _gpsdata.acc = acc
+        $("#id-accuracy").html(_acc(_gpsdata.acc))
       })
       
       this.listenTo(mRDR, "evt-gwx-loaded", function(gwx) {
@@ -126,8 +122,7 @@ define([
         running  :      _gpsdata.run ,
         latitude : _lat(_gpsdata.lat),
         longitude: _lng(_gpsdata.lng),
-        accuracy : _acc(_gpsdata.acc),
-        strength : _bar(_gpsdata.acc)
+        accuracy : _acc(_gpsdata.acc)
       }))
       return this
     },

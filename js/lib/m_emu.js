@@ -135,9 +135,12 @@ define([
   _this.Reset = function() {
     mLUA.Stop ()
     mWIG.Reset()
-    mGPS.Reset()
     mMAP.Reset()
     mGUI.Reset()
+    
+    // FIXME
+    //if (mCFG.gpsAutomaticStart())
+    //  mGPS.Stop ()
   }
   
   _this.Create = function(guidiv) {
@@ -157,13 +160,13 @@ define([
       var gwx = mRDR.getReader()
       var loc = mGPS.getPlayerLocation()
 
-      if (gwx.getCartMetaData().locless) {
+      if (gwx.getCartMetaData().locless)
         mLUA.Call("JS2LUA_SetStartingLocation", loc.lat, loc.lng)
-        mMAP.Start(loc)
-      } else {
-        mGPS.setPlayerLocation(loc)
-      }
-      mGPS.Start(loc)
+
+      mMAP.Start(loc)
+      // FIXME
+      //if (mCFG.gpsAutomaticStart())
+      //  mGPS.Start()
       
       if (gwx.getCartType() == gwx.TYPE_GWC)
         mLUA.Call("JS2LUA_SetPlayerName", gwx.getPlayerName())
