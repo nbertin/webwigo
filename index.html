@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" manifest="manifest.cache">
 
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -22,6 +22,22 @@
     <script src="lib/jquery.fullPage.min.js"></script>
 
     <script>
+
+/* [20190128/nbertin] disabled
+
+      // new version handling = reload application
+      function onUpdateReady() {
+        console.log("new version found: reloading")
+        window.location.reload(true)
+      }
+      
+      // check if a new version is available or not
+      window.applicationCache.addEventListener('updateready', onUpdateReady);
+      if (window.applicationCache.status === window.applicationCache.UPDATEREADY) {
+        onUpdateReady()
+      }
+*/
+
       $(document).ready(function() {
         $("#id-fullpage").fullpage({
           sectionsColor       :
@@ -89,6 +105,7 @@
         <li data-menuanchor="conf">
           <a id="id-tab-btn-conf" href="#conf" class="disabled"><i class="fa fa-cogs"></i></a>
         </li>
+<!-- [20190128/nbertin] removed
         <li>|</li>
         <li data-menuanchor="help">
           <a href="#help">help</a>
@@ -96,6 +113,7 @@
         <li data-menuanchor="about">
           <a href="#about">about</a>
         </li>
+-->
       </ul>
       <ul id="menu-right" class="menu">
         <li>
@@ -104,12 +122,14 @@
         <li>
           <a href="http://groups.google.com/d/forum/webwigo-the-online-wherigo-emulator" title="group"><i class="fa fa-group"></i></a>
         </li>
+<!-- [20190128/nbertin] removed
         <li>
           <a href="http://twitter.com/__webwigo__" title="twitter"><i class="fa fa-twitter"></i></a>
         </li>
         <li>
           <a href="https://github.com/nbertin/webwigo" title="github"><i class="fa fa-github"></i></a>
         </li>
+-->
         <li id="id-menu1-separator" style="display: none;">|</li>
         <li id="id-fullscreen-btn" style="display: none;">
           <a><i id="id-fullscreen-ico" class="fa fa-expand" title="fullscreen"></i></a>
@@ -136,8 +156,9 @@
         <div class="section" id="section-conf">
           <div class="std-page container" id="id-conf"></div>
         </div>
+<!-- [20190128/nbertin] removed
         <div class="section" id="section-help">
-          <div class="std-page container" id="id-help" >
+          <div class="std-page container" id="id-help">
             <h1>Help</h1>
           </div>
         </div>
@@ -146,11 +167,13 @@
             <h1>About</h1>
           </div>
         </div>
+-->
       </div>    
     </div>
 
     <div id="id-emul"></div>
     <div id="id-term"></div>
+
     <!--
     <div id="id-zone" style="display: none;"></div>
     <div id="id-vars" style="display: none;"></div>
