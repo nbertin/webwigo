@@ -22,7 +22,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-var WEBWIGO_VERSION = "2.0"
+var WEBWIGO_VERSION = "2.0.1"
 
 //
 // fullpage plugin sections
@@ -35,7 +35,7 @@ var SECTION_HELP = 5
 
 
 define([
-  "screenfull",
+  "screenfull"
 ], function(screenfull) {
 
   var _this = {}
@@ -43,7 +43,7 @@ define([
   //
   // boot 1st stage (before fullpage rendering)
   //
-  _this.init0 = function() { 
+  _this.init0 = function() {
     // fullscreen management (screenfull)
     if (screenfull.enabled) {
       $("#id-menu1-separator").show()
@@ -79,6 +79,6 @@ define([
   }
 
   // extends module with Backbone Events
-  _.extend(_this, Backbone.Events) 
+  _.extend(_this, Backbone.Events)
   return _this
 });
