@@ -283,12 +283,12 @@ function __refresh_objects()
   for _,v in ipairs(Player:GetActiveVisibleZones()) do
     table.insert(_zones, toObject(v, true))
   end
-  
+
   local _items = {}
   for _,v in ipairs(Player:GetVisibleObjects()) do
     table.insert(_items, toObject(v, true))
   end
-  
+
   local _inven = {}
   for _,v in ipairs(Player:GetVisibleInventory()) do
     table.insert(_inven, toObject(v, false))
@@ -298,7 +298,7 @@ function __refresh_objects()
   for _,v in ipairs(Player:GetActiveVisibleTasks()) do
       table.insert(_tasks, toObject(v, false))
   end
-  
+
   local obj = {
     zones = _zones,
     items = _items,
@@ -446,7 +446,7 @@ end
 WIGInternal.ShowStatusText = function(text)
   print("ERROR", "ShowStatusText", text, "(not implemented)")
 end
-    
+
 WIGInternal.ShowScreen = function(screenIdx, idxObj)
   LUA2JS_ShowScreen(screenIdx, idxObj)
 end
@@ -458,11 +458,11 @@ end
 local NMI = 1852
 
 function m2nmi(v)
-  return v / NMI 
+  return v / NMI
 end
 
 function nmi2m(v)
-  return v * NMI 
+  return v * NMI
 end
 
 -- round to nearest integer
@@ -601,7 +601,7 @@ EnvProtect = function()
       Version      = ""          , -- 2.11
       CartFilename = ""          , -- from reader
       Downloaded   = 0           , -- from GWC
-      Device       = "browser"     -- Windows PPC  
+      Device       = "browser"     -- Windows PPC
     })
 end
 
