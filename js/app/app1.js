@@ -30,12 +30,18 @@ define([
   "app/code",
   "app/data",
   "app/conf",
-  "app/term"
-  //"app/help"  ,
-  //"app/about"
+  "app/term"/*,
+  "app/help",
+  "app/about"*/
 ], function(ViewCtrl, ViewEMap, ViewGpsr, ViewEmul, ViewCode, ViewData, ViewConf, ViewTerm/*, ViewHelp, ViewAbout*/) {
 
   var _this = {}
+
+  // new version handling = reload application
+  //function onUpdateReady() {
+  //  console.log("new version found: reloading")
+  //  window.location.reload(true)
+  //}
 
   //
   // boot 2nd stage (after fullpage rendering)
@@ -52,9 +58,8 @@ define([
     new ViewData()
     new ViewConf()
     new ViewTerm()
-    
-    //new ViewHelp ()
-    //new ViewAbout()
+//    new ViewHelp()
+//    new ViewAbout()
   }
 
   return _this
