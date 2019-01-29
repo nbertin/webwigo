@@ -1,25 +1,18 @@
 /*
-The MIT License (MIT)
+    Copyright (C) 2019 Nicolas Bertin
 
-Copyright (c) 2015 Nicolas BERTIN
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 define([
@@ -28,7 +21,7 @@ define([
   "lib/m_map",
   "lib/m_lua"
 ], function(mRDR, mGPS, mMAP, mLUA) {
-  
+
   var _this   = {}
   var _medias = []
 
@@ -51,8 +44,8 @@ define([
   }
 
   /**
-    * Creates the WIG interface. 
-    * 
+    * Creates the WIG interface.
+    *
     * @public
     * @memberof module:mWIG#
     * @method   Create
@@ -66,10 +59,10 @@ define([
       mLUA.Call("JS2LUA_RefreshLocation", accuracy)
     })
   }
-  
+
   /**
-    * Resets the WIG interface. 
-    * 
+    * Resets the WIG interface.
+    *
     * @public
     * @memberof module:mWIG#
     * @method   Reset
@@ -79,8 +72,8 @@ define([
   }
 
   /**
-    * Starts a JS timer for WIG engine. 
-    * 
+    * Starts a JS timer for WIG engine.
+    *
     * @public
     * @memberof module:mWIG#
     * @method   TimerStart
@@ -162,26 +155,26 @@ define([
   _this.RefreshObjects = function(obj) {
     _this.trigger("evt-wig-refresh-objects", parseJSON(obj))
   }
-  
+
   _this.CartridgeLoaded = function() {
     _this.trigger("evt-wig-cartridge-loaded")
-  } 
+  }
 
   _this.CartridgeEvent = function(evt) {
     console.log("CartridgeEvent = ", evt)
     _this.trigger("evt-wig-cartridge-"+evt)
-  } 
-  
+  }
+
   _this.GetInput = function(obj) {
     var m = parseJSON(obj)
     _this.trigger("evt-wig-getinput", m.txt, m.media, m.type, m.choices)
   }
-  
+
   _this.MessageBox = function(obj) {
     var m = parseJSON(obj)
     _this.trigger("evt-wig-messagebox", m.txt, m.media, m.btn1, m.btn2)
   }
-  
+
   _this.ShowScreen = function(idxScreen, idxObject) {
     _this.trigger("evt-wig-showscreen", idxScreen, idxObject)
   }

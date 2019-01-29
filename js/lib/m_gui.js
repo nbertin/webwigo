@@ -1,25 +1,18 @@
 /*
-The MIT License (MIT)
+    Copyright (C) 2019 Nicolas Bertin
 
-Copyright (c) 2015 Nicolas BERTIN
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 define([
@@ -31,7 +24,7 @@ define([
 ], function(mLUA, mWIG, mGPS, mSCR, mTPL) {
 
   var _this = {}
-    
+
   //
   // utility routine to replace <br> by spaces in a string (for ellipsis)
   //
@@ -89,7 +82,7 @@ define([
   _this.HideSplashScreen = function() {
     mSCR.Hide(mSCR.LEVEL_INI)
   }
- 
+
   /**
     * Displays an InputBox.
     *
@@ -99,7 +92,7 @@ define([
     * @param    {string} txt     - message to display
     * @param    {number} media   - media identifier to display
     * @param    {string} type    - InputBox type (MultipleChoice or Text)
-    * @param    {array } choices - list of choices   
+    * @param    {array } choices - list of choices
     */
   function GetInput(txt, media, type, choices) {
     var data = {
@@ -130,7 +123,7 @@ define([
             mLUA.Call("JS2LUA_GetInput", val)
           })
         }
-    
+
         $("#id-getinput-back").click(function(event) {
           mSCR.Hide(gobj)
           mLUA.Call("JS2LUA_GetInput", "<cancelled>")
@@ -140,7 +133,7 @@ define([
 
     mSCR.Show(gobj)
   }
-  
+
   /**
     * Displays a MessageBox.
     *
@@ -150,7 +143,7 @@ define([
     * @param    {string} txt   - message to display
     * @param    {number} media - media identifier to display
     * @param    {string} btn1  - button1 text
-    * @param    {string} btn2  - button2 text   
+    * @param    {string} btn2  - button2 text
     */
   function MessageBox(text, media, btn1, btn2) {
     var data = {
@@ -190,7 +183,7 @@ define([
     *   INVENTORYSCREEN = 3
     *   TASKSCREEN      = 4
     *   DETAILSCREEN    = 5
-    * 
+    *
     * @public
     * @memberof module:mGUI#
     * @method   ShowScreen
@@ -229,7 +222,7 @@ define([
         console.debug("ERROR: ShowScreen", idxScreen, "UNKNOWN")
     }
   }
-  
+
   var MAINSCREEN      = 0
   var LOCATIONSCREEN  = 1
   var ITEMSCREEN      = 2
@@ -241,7 +234,7 @@ define([
     { name: undefined  , if0name: undefined              , items: undefined },
     { name: "Locations", if0name: "(Nowhere to go)"      , items: []        },
     { name: "You see"  , if0name: "(Nothing of interest)", items: []        },
-    { name: "Inventory", if0name: "(No items)"           , items: []        }, 
+    { name: "Inventory", if0name: "(No items)"           , items: []        },
     { name: "Tasks"    , if0name: "(No new tasks)"       , items: []        },
     { name: undefined  , if0name: undefined              , items: undefined }
   ]
@@ -269,7 +262,7 @@ define([
             items   : lst(scr)
           }
           $("#id-mainscreen-items").append(_.template(mTPL.main_i)(data))
-          
+
           $("#"+data.id).on("click", { screenidx: i }, function(event) {
             if (_screens[event.data.screenidx].items.length > 0)
               ListScreen(event.data.screenidx)
@@ -280,11 +273,10 @@ define([
 
     mSCR.Show(gobj)
   }
-  
+
   function needrouting(screenidx) {
     return (screenidx == LOCATIONSCREEN)
   }
-  
 
   //
   // @private
@@ -330,7 +322,7 @@ define([
         })
       }
     }
-    
+
     mSCR.Show(gobj)
   }
 
@@ -343,7 +335,7 @@ define([
   }
 
   //
-  // @private  
+  // @private
   // @desc Displays the details of an object
   // @param   screenidx locations, you see, inventory or tasks
   // @param   itemidx   item clicked
@@ -388,7 +380,7 @@ define([
 
           mTPL.setimage(data)
           $("#"+data.id+"-name").html(data.name)
-          $("#"+data.id+"-desc").html(data.desc)          
+          $("#"+data.id+"-desc").html(data.desc)
           mTPL.setrouting(data, mTPL.routxl)
 
           if (cmdwith) {
@@ -403,10 +395,10 @@ define([
       },
       onshow: function() {
         mTPL.setimage(data)
-        
+
         $("#id-detailscreen-ok").click(function(event) {
           _back(gobj, screenidx, cmdwith)
-        })        
+        })
       }
     }
 
@@ -444,7 +436,7 @@ define([
           cmdwith : cmd.cmdwith               ,
           targets : targetsAreVisible()
         }
-        $("#id-detailscreen-items").append(_.template(mTPL.dtl__i)(data))    
+        $("#id-detailscreen-items").append(_.template(mTPL.dtl__i)(data))
         if (cmd.cmdwith) {
           if (targetsAreVisible()) {
             $("#"+data.id).on("click", { cmdidx: cmd.idx }, function(event) {
@@ -475,7 +467,7 @@ define([
             cmdwith : false                     ,
             targets : true
           }
-          $("#id-detailscreen-items").append(_.template(mTPL.dtl__i)(data))    
+          $("#id-detailscreen-items").append(_.template(mTPL.dtl__i)(data))
           $("#"+data.id).on("click", { cmdidx: cmdidx, tgtidx: tgt.idx }, function(event) {
             mSCR.Hide(obj)
             ExecuteCommand(
@@ -503,13 +495,13 @@ define([
     mSCR.Create(emudiv)
 
     //
-    // This event is sent by the mLUA module when the Lua VM is crashed 
+    // This event is sent by the mLUA module when the Lua VM is crashed
     //
     _this.listenTo(mLUA, "evt-luavm-error", function(msg) {
       if (msg.match(/\[string "input"\]/) != null) {
         msg = msg.slice(msg.search(":")+1)
         msg = msg.slice(msg.search(":")+1)
-      } 
+      }
       ShowLuaMsg("error", msg)
     })
 
