@@ -30,12 +30,6 @@ define([
 
   var _this = {}
 
-  // new version handling = reload application
-  //function onUpdateReady() {
-  //  console.log("new version found: reloading")
-  //  window.location.reload(true)
-  //}
-
   //
   // boot 2nd stage (after fullpage rendering)
   //
