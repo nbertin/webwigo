@@ -106,7 +106,7 @@ cart = dofile("cartridge.lua")
 --  _suicide()
 --end
 --
---EnvProtect()
+EnvProtect()
 Player.Cartridge = cart
 
 for _,v in ipairs(cart:GetAllOfType("ZMedia")) do
